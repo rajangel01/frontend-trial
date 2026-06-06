@@ -1,0 +1,27 @@
+.container {
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  box-shadow: 0 0 10px #ccc;
+  border-radius: 10px;
+  text-align: center;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.toggle {
+  color: blue;
+  cursor: pointer;
+}
