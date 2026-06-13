@@ -12,7 +12,7 @@ const UserProfile = () => {
     tests: 48,
     avgScore: 67,
     bestScore: 89,
-    streak: 12,
+    streak: 0,
   };
   return (
     

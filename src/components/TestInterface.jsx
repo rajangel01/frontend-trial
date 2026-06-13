@@ -1,21 +1,52 @@
 import { useEffect, useState } from "react";
 // import { useCallback } from "react";
+// import { useNavigate } from "react-router-dom";
 
 export default function TestInterface() {
+  // const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
   const [answers, setAnswers] = useState({});
   const [reviewQuestions, setReviewQuestions] = useState([]);
-  const [timeLeft, setTimeLeft] = useState(3 * 60 * 60); // 3 hours
+  const [timeTaken, setTimeLeft] = useState(3 * 60 * 60); // 3 hours
+  // const today = new Date();
+  // const testId = `${today.getDate()}${today.toLocaleString('default', {
+  //   month: 'long',
+  // })}${today.getFullYear()}`;
 
   useEffect(() => {
     fetchQuestions();
   }, []);
 
-  const handleSubmit = () => {
-    console.log("Answers:", answers);
+  const handleSubmit = async () => {
+    // console.log("Answers:", answers);
+    // try {
+    //   const response = await fetch("http://localhost:8080/submit-test", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json"
+    //     },
+    //     body: JSON.stringify({
+    //       testId,
+    //       answers,
+    //       timeTaken,
+    //     }),
+    //   });
 
+    //   const data = await response.json();
+
+    //   if (data.success) {
+    //     alert("Test Submitted Successfully");
+
+    //     console.log(data.result);
+
+    //     // Result page pe bhej sakte ho
+    //     navigate("/");
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
     alert("Test Submitted");
   };
 
@@ -53,7 +84,7 @@ export default function TestInterface() {
 
   const fetchQuestions = async () => {
     try {
-      const res = await fetch("http://localhost:8080/all-questions");
+      const res = await fetch("https://gateprocs.vercel.app/all-questions");
 
       const data = await res.json();
 
@@ -88,8 +119,6 @@ export default function TestInterface() {
     }
   };
 
-
-
   if (questions.length === 0) {
     return <div className="text-center mt-5">Loading Questions...</div>;
   }
@@ -105,7 +134,7 @@ export default function TestInterface() {
             <div className="card-header bg-primary text-white d-flex justify-content-between">
               <h5>Question {currentQuestion + 1}</h5>
 
-              <h5>Time Left:{formatTime(timeLeft)}</h5>
+              <h5>Time Left:{formatTime(timeTaken)}</h5>
             </div>
 
             <div className="card-body">

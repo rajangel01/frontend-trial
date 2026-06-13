@@ -24,7 +24,7 @@ export default function AddQuestion() {
 
   try {
     const response = await fetch(
-      "https://backend-trial-1ojm.vercel.app/add-question",
+      "https://gateprocs.vercel.app/add-question",
       {
         method: "POST",
         headers: {

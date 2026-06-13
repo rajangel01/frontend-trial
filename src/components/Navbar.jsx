@@ -7,7 +7,17 @@ export default function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     navigate("/");
+    window.location.reload();
   };
+
+  let admin = false;
+  const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
+  if (userData) {
+    // console.log(userData.name)
+    if (userData.email === "raj@gmail.com") {
+      admin = true;
+    }
+  }
 
   return (
     <nav style={styles.nav}>
@@ -16,16 +26,36 @@ export default function Navbar() {
 
       {/* Links */}
       <div style={styles.links}>
-        {isLoggedIn?(<Link to="/home" style={styles.link}>Home</Link>):(<Link to="/" style={styles.link}>Home</Link>)}
-        
-        <Link to="/info" style={styles.link}>Info</Link>
+        {isLoggedIn ? (
+          <Link to="/home" style={styles.link}>
+            Home
+          </Link>
+        ) : (
+          <Link to="/info" style={styles.link}>
+            Home
+          </Link>
+        )}
+
+        <Link to="/info" style={styles.link}>
+          Info
+        </Link>
 
         {isLoggedIn && (
-          <Link to="/dashboard" style={styles.link}>Dashboard</Link>
+          <Link to="/dashboard" style={styles.link}>
+            Dashboard
+          </Link>
+        )}
+
+        {admin && (
+          <Link to="/admin" style={styles.link}>
+            Admin
+          </Link>
         )}
 
         {!isLoggedIn ? (
-          <Link to="/login" style={styles.loginBtn}>Login</Link>
+          <Link to="/login" style={styles.loginBtn}>
+            Login
+          </Link>
         ) : (
           <button onClick={handleLogout} style={styles.logoutBtn}>
             Logout
@@ -40,14 +70,13 @@ const styles = {
   nav: {
     // position: "fixed",
     // width:"100%",
-    margin:"0",
+    margin: "0",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     padding: "15px 30px",
     background: "#0f172a",
     color: "white",
-    
   },
   logo: {
     margin: 0,

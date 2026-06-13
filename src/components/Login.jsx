@@ -17,7 +17,7 @@ function Login() {
     // console.log("Login Data:", { email, password });
 
     try {
-      const res = await fetch("https://backend-trial-1ojm.vercel.app/login", {
+      const res = await fetch("https://gateprocs.vercel.app/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -29,14 +29,13 @@ function Login() {
       });
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.msg);
-      }
-
       localStorage.setItem("isLoggedIn", JSON.stringify(data))
       navigate("/home");
+      
       console.log(data)
-      alert(data.msg);
+      alert("Login Successful")
+      window.open("/home");
+      window.location.reload();
     } catch (err) {
       alert(err.message);
     }
@@ -58,11 +57,15 @@ function Login() {
         onChange={(e) => setPassword(e.target.value)}
       />
 
-      <button onClick={handleLogin}>Login</button>
+      <button className="btn btn-primary" onClick={handleLogin}>Login</button>
 
       <p>
         Don't have an account?{" "}
         <Link to='/signup'>Signup</Link>
+      </p>
+      <hr />
+      <p>Forgot Password??{" "}
+        <Link to='/otp-login'>Login via OTP</Link>
       </p>
     </div>
   );

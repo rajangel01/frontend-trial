@@ -1,8 +1,31 @@
 import React from 'react'
+import { useState, useEffect } from 'react'
 
 const Info = () => {
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+
+  useEffect(() => {
+    fetch("https://gateprocs.vercel.app/total-questions")
+      .then((res) => res.json())
+      .then((data) => {
+        setTotalQuestions(data.totalQuestions);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("https://gateprocs.vercel.app/total-users")
+      .then((res) => res.json())
+      .then((data) => {
+        setTotalUsers(data.totalUsers);
+      });
+  }, []);
   return (
     <div className="container-fluid">
+      <div className="container">
+        <h3>Trusted by {totalUsers}+ GATE CSE Aspirants</h3>
+        <h5> {totalQuestions}+ Questions are there.</h5>
+      </div>
         <div className="about">
             <h4>About us</h4>
             <ul>
@@ -41,7 +64,7 @@ const Info = () => {
                 <li>Call: <a href="tel:+918207644020">+91 8207644020</a></li>
             </ul>
         <h4>Connect with us</h4>
-        <div class="connect-section d-flex justify-content-center gap-4 mt-4">
+        <div className="connect-section d-flex justify-content-center gap-4 mt-4">
 
   <a href="https://t.me/c_programming_language1" rel="noreferrer" target="_blank">
     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaAFxpi9LR19aEycVcxzOtz5PlsQaS5YNRyg&s" alt="Telegram" width="50" />
