@@ -34,7 +34,7 @@ function Login() {
       
       console.log(data)
       alert("Login Successful")
-      window.open("/home");
+      // window.open("/home");
       window.location.reload();
     } catch (err) {
       alert(err.message);

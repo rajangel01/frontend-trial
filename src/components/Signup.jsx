@@ -111,6 +111,7 @@ function Signup() {
 
       alert(data.msg  + " Now You Can Login");
       window.open("/login");
+      window.location.reload();
     } catch (err) {
       alert(err.message );
     }

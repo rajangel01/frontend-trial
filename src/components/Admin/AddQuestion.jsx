@@ -1,8 +1,11 @@
 import { useState } from "react";
+import React from "react";
 
 export default function AddQuestion() {
+  //  const [questionType, setQuestionType] = useState("");
   const [questionData, setQuestionData] = useState({
     qId: "",
+    questionType: "",
     question: "",
     qImage: "",
     options: [
@@ -20,50 +23,52 @@ export default function AddQuestion() {
   });
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    console.log(questionData)
 
-  try {
-    const response = await fetch(
-      "https://gateprocs.vercel.app/add-question",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const response = await fetch(
+        "https://gateprocs.vercel.app/add-question",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(questionData),
         },
-        body: JSON.stringify(questionData),
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(data.message);
+
+        setQuestionData({
+          qId: "",
+          question: "",
+          questionType: "",
+          qImage: "",
+          options: [
+            { text: "", image: "" },
+            { text: "", image: "" },
+            { text: "", image: "" },
+            { text: "", image: "" },
+          ],
+          correctAnswer: "",
+          solution: "",
+          solutionImage: "",
+          subject: "",
+          marks: 1,
+          negativeMarks: 0.33,
+        });
+      } else {
+        alert(data.message);
       }
-    );
-
-    const data = await response.json();
-
-    if (response.ok) {
-      alert(data.message);
-
-      setQuestionData({
-        qId: "",
-        question: "",
-        qImage: "",
-        options: [
-          { text: "", image: "" },
-          { text: "", image: "" },
-          { text: "", image: "" },
-          { text: "", image: "" },
-        ],
-        correctAnswer: "",
-        solution: "",
-        solutionImage: "",
-        subject: "",
-        marks: 1,
-        negativeMarks: 0.33,
-      });
-    } else {
-      alert(data.message);
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong");
     }
-  } catch (error) {
-    console.error(error);
-    alert("Something went wrong");
-  }
-};
+  };
 
   const handleChange = (e) => {
     setQuestionData({
@@ -81,8 +86,6 @@ export default function AddQuestion() {
       options: updatedOptions,
     });
   };
-
-  
 
   return (
     <div className="container-fluid py-4">
@@ -139,7 +142,24 @@ export default function AddQuestion() {
                 />
               </div>
             </div>
+            {/* Question type select */}
+            <div className="container mt-4">
+              <div className="mb-3">
+                <label className="form-label fw-bold">Question Type</label>
 
+                <select
+                  className="form-select"
+                  name="questionType"
+                  value={questionData.questionType}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Question Type</option>
+                  <option value="MCQ">MCQ (Single Correct)</option>
+                  <option value="MSQ">MSQ (Multiple Correct)</option>
+                  <option value="NAT">NAT (Numerical Answer)</option>
+                </select>
+              </div>
+            </div>
             {/* Question */}
             <div className="mt-4">
               <label className="form-label">Question</label>
@@ -151,7 +171,6 @@ export default function AddQuestion() {
                 onChange={handleChange}
               />
             </div>
-
             <div className="mt-3">
               <label className="form-label">Question Image URL</label>
               <input
@@ -162,12 +181,9 @@ export default function AddQuestion() {
                 onChange={handleChange}
               />
             </div>
-
             {/* Options */}
             <hr className="my-4" />
-
             <h4 className="mb-3">Options</h4>
-
             {questionData.options.map((option, index) => (
               <div key={index} className="card mb-3 border">
                 <div className="card-body">
@@ -183,11 +199,7 @@ export default function AddQuestion() {
                         placeholder="Option Text"
                         value={option.text}
                         onChange={(e) =>
-                          handleOptionChange(
-                            index,
-                            "text",
-                            e.target.value
-                          )
+                          handleOptionChange(index, "text", e.target.value)
                         }
                       />
                     </div>
@@ -199,11 +211,7 @@ export default function AddQuestion() {
                         placeholder="Option Image URL"
                         value={option.image}
                         onChange={(e) =>
-                          handleOptionChange(
-                            index,
-                            "image",
-                            e.target.value
-                          )
+                          handleOptionChange(index, "image", e.target.value)
                         }
                       />
                     </div>
@@ -211,7 +219,6 @@ export default function AddQuestion() {
                 </div>
               </div>
             ))}
-
             {/* Correct Answer */}
             <div className="mt-3">
               <label className="form-label">Correct Answer</label>
@@ -228,12 +235,9 @@ export default function AddQuestion() {
                 <option value="D">Option D</option>
               </select>
             </div>
-
             {/* Solution */}
             <hr className="my-4" />
-
             <h4>Solution</h4>
-
             <div className="mb-3">
               <textarea
                 className="form-control"
@@ -244,7 +248,6 @@ export default function AddQuestion() {
                 onChange={handleChange}
               />
             </div>
-
             <div className="mb-3">
               <input
                 type="text"
@@ -255,7 +258,6 @@ export default function AddQuestion() {
                 onChange={handleChange}
               />
             </div>
-
             {/* Submit */}
             <div className="d-grid">
               <button

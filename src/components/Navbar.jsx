@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <nav style={styles.nav}>
       {/* Logo */}
-      <h2 style={styles.logo}>GATEProCS</h2>
+      <h5 style={styles.logo}>GATEProCS</h5>
 
       {/* Links */}
       <div style={styles.links}>
@@ -74,7 +74,7 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "15px 30px",
+    padding: "1px 10px",
     background: "#0f172a",
     color: "white",
   },
@@ -84,23 +84,24 @@ const styles = {
   },
   links: {
     display: "flex",
+    margin:"10px",
     gap: "20px",
     alignItems: "center",
   },
   link: {
     color: "white",
     textDecoration: "none",
-    fontSize: "16px",
+    fontSize: "14px",
   },
   loginBtn: {
-    padding: "6px 12px",
+    padding: "4px 8px",
     background: "#22c55e",
     border: "none",
     color: "white",
     cursor: "pointer",
   },
   logoutBtn: {
-    padding: "6px 12px",
+    padding: "4px 8px",
     background: "#ef4444",
     border: "none",
     color: "white",
