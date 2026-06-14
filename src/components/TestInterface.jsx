@@ -144,7 +144,10 @@ export default function TestInterface() {
                 <img src={q.qImage} alt="" className="img-fluid my-3" />
               )}
 
-              <div className="mt-4">
+              {/* Show option based on Question Type */}
+              {/* For MCQ  */}
+              {q.questionType === "MCQ" &&(
+                <div className="mt-4">
                 {q.options.map((option, index) => (
                   <div
                     key={index}
@@ -172,6 +175,54 @@ export default function TestInterface() {
                   </div>
                 ))}
               </div>
+              )}
+              {/* For MSQ  */}
+              {q.questionType === "MSQ"&&(
+                <div className="mt-4">
+                {q.options.map((option, index) => (
+                  <div
+                    key={index}
+                    className="form-check border p-3 mb-2"
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      name="option"
+                      checked={answers[currentQuestion] === index}
+                      onChange={() => handleOptionSelect(index)}
+                    />
+
+                    <label className="form-check-label ms-2">
+                      {option.text}
+                    </label>
+
+                    {option.image && (
+                      <img
+                        src={option.image}
+                        alt=""
+                        className="img-fluid d-block mt-2"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+              )}
+              {/* For NAT  */}
+              {q.questionType === "NAT" && (
+              <div className="mt-3">
+                <label className="form-label">Enter Your Answer</label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  name="correctAnswer"
+                  onChange={setAnswers}
+                  placeholder="Enter Numerical Answer"
+                />
+              </div>
+            )}
+
+              
 
               <div className="d-flex gap-2 mt-4">
                 <button className="btn btn-secondary" onClick={handlePrevious}>
