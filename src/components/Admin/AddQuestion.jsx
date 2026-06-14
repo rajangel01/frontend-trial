@@ -15,6 +15,8 @@ export default function AddQuestion() {
       { text: "", image: "" },
     ],
     correctAnswer: "",
+    correctAnswers: [],
+    answer: "",
     solution: "",
     solutionImage: "",
     subject: "",
@@ -24,7 +26,7 @@ export default function AddQuestion() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(questionData)
+    console.log(questionData);
 
     try {
       const response = await fetch(
@@ -55,6 +57,8 @@ export default function AddQuestion() {
             { text: "", image: "" },
           ],
           correctAnswer: "",
+          correctAnswers: [],
+          answer: "",
           solution: "",
           solutionImage: "",
           subject: "",
@@ -84,6 +88,21 @@ export default function AddQuestion() {
     setQuestionData({
       ...questionData,
       options: updatedOptions,
+    });
+  };
+
+  const handleMSQAnswer = (option) => {
+    let answers = [...questionData.correctAnswers];
+
+    if (answers.includes(option)) {
+      answers = answers.filter((a) => a !== option);
+    } else {
+      answers.push(option);
+    }
+
+    setQuestionData({
+      ...questionData,
+      correctAnswers: answers,
     });
   };
 
@@ -183,58 +202,110 @@ export default function AddQuestion() {
             </div>
             {/* Options */}
             <hr className="my-4" />
-            <h4 className="mb-3">Options</h4>
-            {questionData.options.map((option, index) => (
-              <div key={index} className="card mb-3 border">
-                <div className="card-body">
-                  <h5 className="card-title">
-                    Option {String.fromCharCode(65 + index)}
-                  </h5>
+            {questionData.questionType !== "NAT" &&
+              questionData.questionType !== "" && (
+                <>
+                  <h4 className="mb-3">Options</h4>
+                  {questionData.options.map((option, index) => (
+                    <div key={index} className="card mb-3 border">
+                      <div className="card-body">
+                        <h5 className="card-title">
+                          Option {String.fromCharCode(65 + index)}
+                        </h5>
 
-                  <div className="row g-3">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Option Text"
-                        value={option.text}
-                        onChange={(e) =>
-                          handleOptionChange(index, "text", e.target.value)
-                        }
-                      />
-                    </div>
+                        <div className="row g-3">
+                          <div className="col-md-6">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Option Text"
+                              value={option.text}
+                              onChange={(e) =>
+                                handleOptionChange(
+                                  index,
+                                  "text",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </div>
 
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Option Image URL"
-                        value={option.image}
-                        onChange={(e) =>
-                          handleOptionChange(index, "image", e.target.value)
-                        }
-                      />
+                          <div className="col-md-6">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Option Image URL"
+                              value={option.image}
+                              onChange={(e) =>
+                                handleOptionChange(
+                                  index,
+                                  "image",
+                                  e.target.value,
+                                )
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  ))}
+                </>
+              )}
+
+            {/* correct answer for NAT */}
+            {questionData.questionType === "NAT" && (
+              <div className="mt-3">
+                <label className="form-label">Numerical Answer</label>
+
+                <input
+                  type="number"
+                  className="form-control"
+                  name="correctAnswer"
+                  value={questionData.correctAnswer}
+                  onChange={handleChange}
+                  placeholder="Enter Numerical Answer"
+                />
               </div>
-            ))}
-            {/* Correct Answer */}
-            <div className="mt-3">
-              <label className="form-label">Correct Answer</label>
-              <select
-                className="form-select"
-                name="correctAnswer"
-                value={questionData.correctAnswer}
-                onChange={handleChange}
-              >
-                <option value="">Select Correct Answer</option>
-                <option value="A">Option A</option>
-                <option value="B">Option B</option>
-                <option value="C">Option C</option>
-                <option value="D">Option D</option>
-              </select>
-            </div>
+            )}
+            {/* Correct Answer for mcq */}
+            {questionData.questionType === "MCQ" && (
+              <div className="mt-3">
+                <label className="form-label">Correct Answer</label>
+
+                <select
+                  className="form-select"
+                  name="correctAnswer"
+                  value={questionData.correctAnswer}
+                  onChange={handleOptionChange}
+                >
+                  <option value="">Select Correct Answer</option>
+                  <option value="A">Option A</option>
+                  <option value="B">Option B</option>
+                  <option value="C">Option C</option>
+                  <option value="D">Option D</option>
+                </select>
+              </div>
+            )}
+            {/* correct answer for msq */}
+            {questionData.questionType === "MSQ" && (
+              <div className="mt-3">
+                <label className="form-label">Select Correct Answers</label>
+
+                {["A", "B", "C", "D"].map((option) => (
+                  <div className="form-check" key={option}>
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={questionData.correctAnswers.includes(option)}
+                      onChange={() => handleMSQAnswer(option)}
+                    />
+
+                    <label className="form-check-label">Option {option}</label>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Solution */}
             <hr className="my-4" />
             <h4>Solution</h4>
