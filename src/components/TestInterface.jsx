@@ -52,28 +52,126 @@ export default function TestInterface() {
   };
 
   // Count Correct Questions
-  const countCorrect = ()=>{
-    let count = 0;
-    return count;
-  }
+  const countCorrect = () => {
+    let correct = 0;
+    questions.forEach((q, index) => {
+      // MCQ
+      if (
+        q.questionType === "MCQ" &&
+        correctAnswer[index] === q.correctAnswer
+      ) {
+        correct++;
+      }
+
+      // MSQ
+      if (q.questionType === "MSQ") {
+        const userAns = correctAnswers[index] || [];
+        const dbAns = q.correctAnswers || [];
+
+        const isCorrect =
+          userAns.length === dbAns.length &&
+          [...userAns].sort().join(",") === [...dbAns].sort().join(",");
+
+        if (isCorrect) {
+          correct++;
+        }
+      }
+
+      // NAT
+      if (
+        q.questionType === "NAT" &&
+        Number(answer[index]) === Number(q.answer)
+      ) {
+        correct++;
+      }
+    });
+    return correct;
+  };
 
   // Count Wrong Questions
-  const countWrong=()=>{
-    let count = 0;
-    return count;
-  }
+  // const countWrong=()=>{
+  //   let count = 0;
+  //   return count;
+  // }
 
   // Calculate Score
-  const calculateScore=()=>{
-    let count =0;
-    return count;
-  }
+  const calculateScore = () => {
+    let score = 0;
+    questions.forEach((q, index) => {
+      // MCQ
+      if (q.questionType === "MCQ") {
+        const userAnswer = correctAnswer[index];
+
+        if (userAnswer !== undefined) {
+          if (userAnswer === q.correctAnswer) {
+            score += q.marks;
+          } else {
+            score -= q.negativeMarks;
+          }
+        }
+      }
+
+      // MSQ
+      if (q.questionType === "MSQ") {
+        const userAnswer = correctAnswers[index] || [];
+        const dbAnswer = q.correctAnswers || [];
+
+        if (userAnswer.length > 0) {
+          const isCorrect =
+            userAnswer.length === dbAnswer.length &&
+            [...userAnswer].sort().join(",") === [...dbAnswer].sort().join(",");
+
+          if (isCorrect) {
+            score += q.marks;
+          } else {
+            score -= q.negativeMarks;
+          }
+        }
+      }
+
+      // NAT
+      if (q.questionType === "NAT") {
+        const userAnswer = answer[index];
+
+        if (userAnswer !== undefined && userAnswer !== "") {
+          if (Number(userAnswer) === Number(q.answer)) {
+            score += q.marks;
+          } else {
+            score -= q.negativeMarks;
+          }
+        }
+      }
+    });
+    return score;
+  };
 
   // Calculate Accuracy
-  const calculateAccuracy=(correct, attempted)=>{
-    let accuracy = (correct/attempted)*100;
+  const calculateAccuracy = (correct, attempted) => {
+    let accuracy = (correct / attempted) * 100;
     return accuracy;
-  }
+  };
+
+  // Saving answers in database
+  const userAnswers = questions.map((q, index) => {
+    let userAnswer = null;
+
+    if (q.questionType === "MCQ") {
+      userAnswer = correctAnswer[index];
+    }
+
+    if (q.questionType === "MSQ") {
+      userAnswer = correctAnswers[index];
+    }
+
+    if (q.questionType === "NAT") {
+      userAnswer = answer[index];
+    }
+
+    return {
+      qId: q.qId,
+      answer: userAnswer,
+    };
+  });
 
   // Handle NAT Answers
   const handleNATAnswer = (e) => {
@@ -104,18 +202,18 @@ export default function TestInterface() {
   const handleSubmit = async () => {
     const attempted = await getAttemptedCount();
     const correct = await countCorrect();
-    const wrong = await countWrong();
+    const wrong = attempted - correct;
     const unattempted = questions.length - attempted;
     const actualTimeTaken = TOTAL_TIME - timeTaken;
-    const score = calculateScore();
+    const score = await calculateScore();
     const accuracy = calculateAccuracy(correct, attempted);
-    console.log("Total Correct: "+correct);
-    console.log("Total Wrong: "+wrong);
+    const answers = await userAnswers();
+    console.log("Total Correct: " + correct);
+    console.log("Total Wrong: " + wrong);
     console.log("Answers:" + answer, correctAnswer, correctAnswers);
     console.log("All correct answers: ");
-    console.log("Score is : "+score);
-    console.log("Accuracy: "+accuracy);
-    
+    console.log("Score is : " + score);
+    console.log("Accuracy: " + accuracy);
 
     questions.forEach((q) => {
       console.log("Question ID:", q.qId);
@@ -144,18 +242,19 @@ export default function TestInterface() {
       const response = await fetch("https://gateprocs.vercel.app/submit-test", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           testId,
           userId,
           attempted,
           unattempted,
-          correct, 
+          correct,
           wrong,
           score,
           accuracy,
           actualTimeTaken,
+          answers,
         }),
       });
 
