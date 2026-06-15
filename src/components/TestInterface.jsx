@@ -152,18 +152,15 @@ export default function TestInterface() {
   };
 
   // Saving answers in database
-  const userAnswers = questions.map((q, index) => {
+  const getUserAnswers = () => {
+  return questions.map((q, index) => {
     let userAnswer = null;
 
     if (q.questionType === "MCQ") {
       userAnswer = correctAnswer[index];
-    }
-
-    if (q.questionType === "MSQ") {
+    } else if (q.questionType === "MSQ") {
       userAnswer = correctAnswers[index];
-    }
-
-    if (q.questionType === "NAT") {
+    } else if (q.questionType === "NAT") {
       userAnswer = answer[index];
     }
 
@@ -172,6 +169,7 @@ export default function TestInterface() {
       answer: userAnswer,
     };
   });
+};
 
   // Handle NAT Answers
   const handleNATAnswer = (e) => {
@@ -207,7 +205,7 @@ export default function TestInterface() {
     const actualTimeTaken = TOTAL_TIME - timeTaken;
     const score = await calculateScore();
     const accuracy = calculateAccuracy(correct, attempted);
-    const answers = await userAnswers();
+    const answers = await getUserAnswers();
     console.log("Total Correct: " + correct);
     console.log("Total Wrong: " + wrong);
     console.log("Answers:" + answer, correctAnswer, correctAnswers);
