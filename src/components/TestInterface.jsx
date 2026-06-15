@@ -1,78 +1,178 @@
 import { useEffect, useState } from "react";
 // import { useCallback } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function TestInterface() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [answer, setAnswer] = useState(0);
+  const [correctAnswer, setCorrectAnswer] = useState("");
+  const [correctAnswers, setCorrectAnswers] = useState([]);
 
-  const [answers, setAnswers] = useState({});
+  // const [answers, setAnswers] = useState({});
   const [reviewQuestions, setReviewQuestions] = useState([]);
   const [timeTaken, setTimeLeft] = useState(3 * 60 * 60); // 3 hours
-  // const today = new Date();
-  // const testId = `${today.getDate()}${today.toLocaleString('default', {
-  //   month: 'long',
-  // })}${today.getFullYear()}`;
+  const TOTAL_TIME = 3 * 60 * 60;
+  const today = new Date();
+  const testId = `${today.getDate()}${today.toLocaleString("default", {
+    month: "long",
+  })}${today.getFullYear()}`;
+
+  const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
+  const userId = userData.userId;
 
   useEffect(() => {
     fetchQuestions();
   }, []);
 
+  // Count Attempted Questions
+  const getAttemptedCount = () => {
+    let attempted = 0;
+
+    questions.forEach((q, index) => {
+      if (q.questionType === "MCQ" && correctAnswer[index] !== undefined) {
+        attempted++;
+      }
+
+      if (q.questionType === "MSQ" && correctAnswers[index]?.length > 0) {
+        attempted++;
+      }
+
+      if (
+        q.questionType === "NAT" &&
+        answer[index] !== undefined &&
+        answer[index] !== ""
+      ) {
+        attempted++;
+      }
+    });
+
+    return attempted;
+  };
+
+  // Count Correct Questions
+  const countCorrect = ()=>{
+    let count = 0;
+    return count;
+  }
+
+  // Count Wrong Questions
+  const countWrong=()=>{
+    let count = 0;
+    return count;
+  }
+
+  // Calculate Score
+  const calculateScore=()=>{
+    let count =0;
+    return count;
+  }
+
+  // Calculate Accuracy
+  const calculateAccuracy=(correct, attempted)=>{
+    let accuracy = (correct/attempted)*100;
+    return accuracy;
+  }
+
   // Handle NAT Answers
   const handleNATAnswer = (e) => {
-  setAnswers({
-    ...answers,
-    [currentQuestion]: e.target.value,
-  });
-};
+    setAnswer({
+      ...answer,
+      [currentQuestion]: e.target.value,
+    });
+  };
 
   // Handle MSQ Answers
-  const handleMSQAnswer = (optionIndex) => {
-    const currentAnswers = answers[currentQuestion] || [];
+  const handleMSQAnswer = (optionLetter) => {
+    const currentAnswers = correctAnswers[currentQuestion] || [];
 
     let updatedAnswers;
 
-    if (currentAnswers.includes(optionIndex)) {
-      updatedAnswers = currentAnswers.filter((item) => item !== optionIndex);
+    if (currentAnswers.includes(optionLetter)) {
+      updatedAnswers = currentAnswers.filter((item) => item !== optionLetter);
     } else {
-      updatedAnswers = [...currentAnswers, optionIndex];
+      updatedAnswers = [...currentAnswers, optionLetter];
     }
 
-    setAnswers({
-      ...answers,
+    setCorrectAnswers({
+      ...correctAnswers,
       [currentQuestion]: updatedAnswers,
     });
   };
 
   const handleSubmit = async () => {
-    // console.log("Answers:", answers);
-    // try {
-    //   const response = await fetch("http://localhost:8080/submit-test", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json"
-    //     },
-    //     body: JSON.stringify({
-    //       testId,
-    //       answers,
-    //       timeTaken,
-    //     }),
-    //   });
+    const attempted = await getAttemptedCount();
+    const correct = await countCorrect();
+    const wrong = await countWrong();
+    const unattempted = questions.length - attempted;
+    const actualTimeTaken = TOTAL_TIME - timeTaken;
+    const score = calculateScore();
+    const accuracy = calculateAccuracy(correct, attempted);
+    console.log("Total Correct: "+correct);
+    console.log("Total Wrong: "+wrong);
+    console.log("Answers:" + answer, correctAnswer, correctAnswers);
+    console.log("All correct answers: ");
+    console.log("Score is : "+score);
+    console.log("Accuracy: "+accuracy);
+    
 
-    //   const data = await response.json();
+    questions.forEach((q) => {
+      console.log("Question ID:", q.qId);
 
-    //   if (data.success) {
-    //     alert("Test Submitted Successfully");
+      if (q.questionType === "MCQ") {
+        console.log("Correct Answer:", q.correctAnswer);
+      }
 
-    //     console.log(data.result);
+      if (q.questionType === "MSQ") {
+        console.log("Correct Answers:", q.correctAnswers);
+      }
 
-    //     // Result page pe bhej sakte ho
-    //     navigate("/");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+      if (q.questionType === "NAT") {
+        console.log("Correct Answer:", q.answer);
+      }
+
+      console.log("------------------");
+    });
+
+    console.log("Attempted Questions: " + attempted);
+    console.log("Unattempted Questions: " + unattempted);
+    console.log("Test ID: " + testId);
+    console.log("Time taken to submit this test series: " + actualTimeTaken);
+    console.log("User Id: " + userId);
+    try {
+      const response = await fetch("https://gateprocs.vercel.app/submit-test", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          testId,
+          userId,
+          attempted,
+          unattempted,
+          correct, 
+          wrong,
+          score,
+          accuracy,
+          actualTimeTaken,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert("Test Submitted Successfully");
+
+        console.log(data.result);
+
+        // Result page pe bhej sakte ho
+        navigate("/");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+    }
     alert("Test Submitted");
   };
 
@@ -120,10 +220,10 @@ export default function TestInterface() {
     }
   };
 
-  const handleOptionSelect = (optionIndex) => {
-    setAnswers({
-      ...answers,
-      [currentQuestion]: optionIndex,
+  const handleOptionSelect = (optionLetter) => {
+    setCorrectAnswer({
+      ...correctAnswer,
+      [currentQuestion]: optionLetter,
     });
   };
 
@@ -174,60 +274,74 @@ export default function TestInterface() {
               {/* For MCQ  */}
               {q.questionType === "MCQ" && (
                 <div className="mt-4">
-                  {q.options.map((option, index) => (
-                    <div
-                      key={index}
-                      className="form-check border rounded p-3 mb-2"
-                    >
-                      <input
-                        type="radio"
-                        className="form-check-input"
-                        name="option"
-                        checked={answers[currentQuestion] === index}
-                        onChange={() => handleOptionSelect(index)}
-                      />
+                  {q.options.map((option, index) => {
+                    const optionLetter = String.fromCharCode(65 + index);
 
-                      <label className="form-check-label ms-2">
-                        {option.text}
-                      </label>
-
-                      {option.image && (
-                        <img
-                          src={option.image}
-                          alt=""
-                          className="img-fluid d-block mt-2"
+                    return (
+                      <div
+                        key={index}
+                        className="form-check border rounded p-3 mb-2"
+                      >
+                        <input
+                          type="radio"
+                          className="form-check-input"
+                          name="option"
+                          checked={
+                            correctAnswer[currentQuestion] === optionLetter
+                          }
+                          onChange={() => handleOptionSelect(optionLetter)}
                         />
-                      )}
-                    </div>
-                  ))}
+
+                        <label className="form-check-label ms-2">
+                          {optionLetter}. {option.text}
+                        </label>
+
+                        {option.image && (
+                          <img
+                            src={option.image}
+                            alt=""
+                            className="img-fluid d-block mt-2"
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
               {/* For MSQ  */}
               {q.questionType === "MSQ" && (
                 <div className="mt-4">
-                  {q.options.map((option, index) => (
-                    <div key={index} className="form-check border p-3 mb-2">
-                      <input
-                        type="checkbox"
-                        className="form-check-input"
-                        name="option"
-                        checked={answers[currentQuestion]?.includes(index) || false}
-                        onChange={() => handleMSQAnswer(index)}
-                      />
+                  {q.options.map((option, index) => {
+                    const optionLetter = String.fromCharCode(65 + index);
 
-                      <label className="form-check-label ms-2">
-                        {option.text}
-                      </label>
-
-                      {option.image && (
-                        <img
-                          src={option.image}
-                          alt=""
-                          className="img-fluid d-block mt-2"
+                    return (
+                      <div key={index} className="form-check border p-3 mb-2">
+                        <input
+                          type="checkbox"
+                          className="form-check-input"
+                          name="option"
+                          checked={
+                            correctAnswers[currentQuestion]?.includes(
+                              optionLetter,
+                            ) || false
+                          }
+                          onChange={() => handleMSQAnswer(optionLetter)}
                         />
-                      )}
-                    </div>
-                  ))}
+
+                        <label className="form-check-label ms-2">
+                          {optionLetter}. {option.text}
+                        </label>
+
+                        {option.image && (
+                          <img
+                            src={option.image}
+                            alt=""
+                            className="img-fluid d-block mt-2"
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               )}
               {/* For NAT  */}
@@ -239,7 +353,7 @@ export default function TestInterface() {
                     type="number"
                     className="form-control"
                     name="correctAnswer"
-                    value={answers[currentQuestion] || ""}
+                    value={answer[currentQuestion] || ""}
                     onChange={handleNATAnswer}
                     placeholder="Enter Numerical Answer"
                   />
@@ -275,7 +389,7 @@ export default function TestInterface() {
                 {questions.map((_, index) => {
                   let btnClass = "btn btn-outline-secondary";
 
-                  if (answers[index] !== undefined) {
+                  if (answer[index] !== undefined) {
                     btnClass = "btn btn-success";
                   }
 

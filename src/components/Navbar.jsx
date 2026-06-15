@@ -46,7 +46,7 @@ export default function Navbar() {
           </Link>
         )}
 
-        {admin && (
+        {admin &&(
           <Link to="/admin" style={styles.link}>
             Admin
           </Link>
