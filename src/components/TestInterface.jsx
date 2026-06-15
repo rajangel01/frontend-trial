@@ -19,6 +19,32 @@ export default function TestInterface() {
     fetchQuestions();
   }, []);
 
+  // Handle NAT Answers
+  const handleNATAnswer = (e) => {
+  setAnswers({
+    ...answers,
+    [currentQuestion]: e.target.value,
+  });
+};
+
+  // Handle MSQ Answers
+  const handleMSQAnswer = (optionIndex) => {
+    const currentAnswers = answers[currentQuestion] || [];
+
+    let updatedAnswers;
+
+    if (currentAnswers.includes(optionIndex)) {
+      updatedAnswers = currentAnswers.filter((item) => item !== optionIndex);
+    } else {
+      updatedAnswers = [...currentAnswers, optionIndex];
+    }
+
+    setAnswers({
+      ...answers,
+      [currentQuestion]: updatedAnswers,
+    });
+  };
+
   const handleSubmit = async () => {
     // console.log("Answers:", answers);
     // try {
@@ -84,7 +110,7 @@ export default function TestInterface() {
 
   const fetchQuestions = async () => {
     try {
-      const res = await fetch("https://gateprocs.vercel.app/all-questions");
+      const res = await fetch("https://gateprocs.vercel.app/daily-test");
 
       const data = await res.json();
 
@@ -146,83 +172,79 @@ export default function TestInterface() {
 
               {/* Show option based on Question Type */}
               {/* For MCQ  */}
-              {q.questionType === "MCQ" &&(
+              {q.questionType === "MCQ" && (
                 <div className="mt-4">
-                {q.options.map((option, index) => (
-                  <div
-                    key={index}
-                    className="form-check border rounded p-3 mb-2"
-                  >
-                    <input
-                      type="radio"
-                      className="form-check-input"
-                      name="option"
-                      checked={answers[currentQuestion] === index}
-                      onChange={() => handleOptionSelect(index)}
-                    />
-
-                    <label className="form-check-label ms-2">
-                      {option.text}
-                    </label>
-
-                    {option.image && (
-                      <img
-                        src={option.image}
-                        alt=""
-                        className="img-fluid d-block mt-2"
+                  {q.options.map((option, index) => (
+                    <div
+                      key={index}
+                      className="form-check border rounded p-3 mb-2"
+                    >
+                      <input
+                        type="radio"
+                        className="form-check-input"
+                        name="option"
+                        checked={answers[currentQuestion] === index}
+                        onChange={() => handleOptionSelect(index)}
                       />
-                    )}
-                  </div>
-                ))}
-              </div>
+
+                      <label className="form-check-label ms-2">
+                        {option.text}
+                      </label>
+
+                      {option.image && (
+                        <img
+                          src={option.image}
+                          alt=""
+                          className="img-fluid d-block mt-2"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
               )}
               {/* For MSQ  */}
-              {q.questionType === "MSQ"&&(
+              {q.questionType === "MSQ" && (
                 <div className="mt-4">
-                {q.options.map((option, index) => (
-                  <div
-                    key={index}
-                    className="form-check border p-3 mb-2"
-                  >
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      name="option"
-                      checked={answers[currentQuestion] === index}
-                      onChange={() => handleOptionSelect(index)}
-                    />
-
-                    <label className="form-check-label ms-2">
-                      {option.text}
-                    </label>
-
-                    {option.image && (
-                      <img
-                        src={option.image}
-                        alt=""
-                        className="img-fluid d-block mt-2"
+                  {q.options.map((option, index) => (
+                    <div key={index} className="form-check border p-3 mb-2">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        name="option"
+                        checked={answers[currentQuestion]?.includes(index) || false}
+                        onChange={() => handleMSQAnswer(index)}
                       />
-                    )}
-                  </div>
-                ))}
-              </div>
+
+                      <label className="form-check-label ms-2">
+                        {option.text}
+                      </label>
+
+                      {option.image && (
+                        <img
+                          src={option.image}
+                          alt=""
+                          className="img-fluid d-block mt-2"
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
               )}
               {/* For NAT  */}
               {q.questionType === "NAT" && (
-              <div className="mt-3">
-                <label className="form-label">Enter Your Answer</label>
+                <div className="mt-3">
+                  <label className="form-label">Enter Your Answer</label>
 
-                <input
-                  type="number"
-                  className="form-control"
-                  name="correctAnswer"
-                  onChange={setAnswers}
-                  placeholder="Enter Numerical Answer"
-                />
-              </div>
-            )}
-
-              
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="correctAnswer"
+                    value={answers[currentQuestion] || ""}
+                    onChange={handleNATAnswer}
+                    placeholder="Enter Numerical Answer"
+                  />
+                </div>
+              )}
 
               <div className="d-flex gap-2 mt-4">
                 <button className="btn btn-secondary" onClick={handlePrevious}>
