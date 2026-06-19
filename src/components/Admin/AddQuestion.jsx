@@ -276,7 +276,7 @@ export default function AddQuestion() {
                   className="form-select"
                   name="correctAnswer"
                   value={questionData.correctAnswer}
-                  onChange={handleOptionChange}
+                  onChange={handleChange}
                 >
                   <option value="">Select Correct Answer</option>
                   <option value="A">Option A</option>

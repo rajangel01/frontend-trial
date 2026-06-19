@@ -205,7 +205,7 @@ export default function TestInterface() {
     const actualTimeTaken = TOTAL_TIME - timeTaken;
     const score = await calculateScore();
     const accuracy = calculateAccuracy(correct, attempted);
-    const answers = await getUserAnswers();
+    const answers =  getUserAnswers();
     console.log("Total Correct: " + correct);
     console.log("Total Wrong: " + wrong);
     console.log("Answers:" + answer, correctAnswer, correctAnswers);
