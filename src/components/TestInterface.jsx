@@ -447,7 +447,6 @@ export default function TestInterface() {
                   <label className="form-label">Enter Your Answer</label>
 
                   <input
-                    type="number"
                     className="form-control"
                     name="correctAnswer"
                     value={answer[currentQuestion] || ""}
