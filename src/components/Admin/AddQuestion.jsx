@@ -266,7 +266,6 @@ export default function AddQuestion() {
                 <label className="form-label">Numerical Answer</label>
 
                 <input
-                  type="number"
                   className="form-control"
                   name="answer"
                   value={questionData.answer}
