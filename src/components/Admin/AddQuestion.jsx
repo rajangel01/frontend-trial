@@ -3,6 +3,7 @@ import React from "react";
 
 export default function AddQuestion() {
   //  const [questionType, setQuestionType] = useState("");
+  // const [NAtAnswer, setAnswer] = useState("");
   const [questionData, setQuestionData] = useState({
     qId: "",
     questionType: "",
@@ -90,6 +91,13 @@ export default function AddQuestion() {
       options: updatedOptions,
     });
   };
+
+  // const handleNATAnswer = (e) => {
+  //   setQuestionData({
+  //     ...questionData,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   const handleMSQAnswer = (option) => {
     let answers = [...questionData.correctAnswers];
@@ -260,8 +268,8 @@ export default function AddQuestion() {
                 <input
                   type="number"
                   className="form-control"
-                  name="correctAnswer"
-                  value={questionData.correctAnswer}
+                  name="answer"
+                  value={questionData.answer}
                   onChange={handleChange}
                   placeholder="Enter Numerical Answer"
                 />

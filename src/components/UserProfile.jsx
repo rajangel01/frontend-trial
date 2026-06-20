@@ -12,7 +12,7 @@ const UserProfile = () => {
     tests: 48,
     avgScore: 67,
     bestScore: 89,
-    streak: 0,
+    userId: userData.userId,
   };
   return (
     
@@ -35,6 +35,7 @@ const UserProfile = () => {
             {/* User Details */}
             <div className="col-md-9">
               <h2 className="fw-bold">{user.name}</h2>
+              <h3>Your Id: {user.userId}</h3>
               <p className="text-muted">{user.email}</p>
 
               <div className="row mt-4">
@@ -77,11 +78,7 @@ const UserProfile = () => {
 
               </div>
 
-              <div className="mt-3">
-                <span className="badge bg-dark p-2 fs-6">
-                  🔥 {user.streak} Days Streak
-                </span>
-              </div>
+              
 
             </div>
 
