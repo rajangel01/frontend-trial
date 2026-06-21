@@ -88,7 +88,7 @@ const UserProfile = () => {
 
               </div>
 
-              <button onClick={handleLogout}>
+              <button className='btn btn-danger' onClick={handleLogout}>
             Logout
           </button>
 

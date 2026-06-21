@@ -18,7 +18,7 @@ const Tests = () => {
               <div className="text">
                 <h5>{formattedDate} || Computer Science</h5>
               </div>
-              <Link to='/testinterface'><button>Attempt Now</button></Link>
+              <Link to='/testinterface'><button className='btn btn-success'>Attempt Now</button></Link>
             </div>
         </div>
     </div>
