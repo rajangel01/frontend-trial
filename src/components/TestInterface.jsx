@@ -448,7 +448,7 @@ export default function TestInterface() {
 
                   <input
                     className="form-control"
-                    name="correctAnswer"
+                    name="answer"
                     value={answer[currentQuestion] || ""}
                     onChange={handleNATAnswer}
                     placeholder="Enter Numerical Answer"
