@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 export default function OTPLogin() {
@@ -7,30 +7,30 @@ export default function OTPLogin() {
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [showOtpBox, setShowOtpBox] = useState(false);
-  const [isVerified, setIsVerified]= useState(false)
+  const [isVerified, setIsVerified] = useState(false);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  async function handleLogin(){
-    if(isVerified){
+  async function handleLogin() {
+    if (isVerified) {
       try {
-      const res = await fetch("https://gateprocs.vercel.app/login-by-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email
-      })
-      });
-      const data = await res.json();
+        const res = await fetch("https://gateprocs.vercel.app/login-by-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+          }),
+        });
+        const data = await res.json();
 
-      localStorage.setItem("isLoggedIn", JSON.stringify(data))
-      alert("Login Successful")
-      window.open("/home");
-      window.location.reload();
-    } catch (err) {
-      alert(err.message);
-    }
+        localStorage.setItem("isLoggedIn", JSON.stringify(data));
+        alert("Login Successful");
+        window.open("/home");
+        window.location.reload();
+      } catch (err) {
+        alert(err.message);
+      }
     }
   }
 
@@ -45,18 +45,15 @@ export default function OTPLogin() {
       }
 
       try {
-        const response = await fetch(
-          "https://gateprocs.vercel.app/send-otp",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email,
-            }),
+        const response = await fetch("https://gateprocs.vercel.app/send-otp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+          body: JSON.stringify({
+            email,
+          }),
+        });
 
         const data = await response.json();
 
@@ -72,99 +69,81 @@ export default function OTPLogin() {
     }
   };
 
-
- const handleOtpVerify = async () => {
-
-  const response = await fetch(
-    "https://gateprocs.vercel.app/verify-otp",
-    {
+  const handleOtpVerify = async () => {
+    const response = await fetch("https://gateprocs.vercel.app/verify-otp", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
-        otp
-      })
+        otp,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setIsVerified(true);
+      handleLogin();
+      alert("Email Verified Successfully.");
+      // handleLogin();
+    } else {
+      alert(data.message);
     }
-  );
-
-  const data = await response.json();
-
-  if (data.success) {
-    setIsVerified(true);
-    handleLogin();
-    alert("Email Verified Successfully.")
-  } else {
-    alert(data.message);
-  }
-};
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="container">
-        <div className="text-center mb-8">
-          <h3 className="text-3xl font-bold text-gray-800">Login with OTP</h3>
-          <p className="text-gray-500 mt-2">
-            Enter your email to receive a one-time password
-          </p>
-        </div>
+    <div className="login-page">
+      <div className="login-card">
+        <h1>OTP Login 🔐</h1>
 
-        <div>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        <p className="subtitle">
+          Enter your email to receive a one-time password
+        </p>
+
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
         {showOtpBox && (
-          <div>
-            <label className="block mb-2 text-sm font-medium text-gray-700">
-              OTP
-            </label>
-
+          <div className="otp-section">
             <input
               type="text"
               maxLength={6}
               placeholder="Enter 6-digit OTP"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 outline-none focus:border-blue-500"
             />
           </div>
         )}
 
         {!showOtpBox ? (
-          <button
-            onClick={handleVerifyEmail}
-            className="btn btn-primary"
-          >
+          <button onClick={handleVerifyEmail} className="login-btn">
             Send OTP
           </button>
         ) : (
           <>
-            <button
-              onClick={handleOtpVerify}
-              className="btn btn-primary"
-            >
+            <button onClick={handleOtpVerify} className="login-btn">
               Verify & Login
             </button>
 
             <button
               onClick={handleVerifyEmail}
-              className="btn btn-primary"
+              className="login-btn"
+              style={{ marginTop: "12px" }}
             >
               Resend OTP
             </button>
           </>
         )}
 
-        <div className="mt-6 text-center">
-          <br /><br />
-          <span className="text-gray-500 text-sm"> <Link to='/login'>Back to Password Login</Link></span>
-        </div>
+        <p className="link-text" style={{ marginTop: "25px" }}>
+          <Link to="/login">← Back to Password Login</Link>
+        </p>
       </div>
     </div>
   );

@@ -17,35 +17,36 @@ export default function Navbar() {
   return (
     <nav style={styles.nav}>
       {/* Logo */}
-      <p style={styles.logo}>GATEProCS</p>
+      <h5 style={styles.logo}>GATEProCS</h5>
 
       {/* Links */}
       <div style={styles.links}>
         {isLoggedIn ? (
           <Link to="/home" style={styles.link}>
-            Home
+            <i class="fa-solid fa-house"></i>
           </Link>
         ) : (
           <Link to="/info" style={styles.link}>
-            Home
+            <i class="fa-solid fa-house"></i>
           </Link>
         )}
 
         <Link to="/info" style={styles.link}>
-          Info
+          <i class="fa-solid fa-circle-info"></i>
         </Link>
-
-        {isLoggedIn && (
-          <Link to="/dashboard" style={styles.link}>
-            Dashboard
-          </Link>
-        )}
 
         {admin &&(
           <Link to="/admin" style={styles.link}>
             Admin
           </Link>
         )}
+        {isLoggedIn && (
+          <Link to="/dashboard" style={styles.link}>
+             <i class="fa-solid fa-bars"></i>
+          </Link>
+        )}
+
+        
 
         {!isLoggedIn && (
           <Link to="/login" style={styles.loginBtn}>
@@ -75,14 +76,14 @@ const styles = {
   },
   links: {
     display: "flex",
-    margin:"10px",
-    gap: "20px",
+    margin:"15px",
+    gap: "30px",
     alignItems: "center",
   },
   link: {
     color: "white",
     textDecoration: "none",
-    fontSize: "12px",
+    fontSize: "16px",
   },
   loginBtn: {
     padding: "4px 8px",
