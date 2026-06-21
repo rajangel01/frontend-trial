@@ -18,15 +18,18 @@ const UpdateSolutionVideo = () => {
     alert("Video Updated");
   };
   return (
-    <div className="container">
-      <input
+    <div className="login-page">
+      <div className="login-card">
+        <input
+        className="otp-section"
         type="text"
         placeholder="Youtube Embed URL"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
       />
 
-      <button onClick={updateVideo}>Update Video</button>
+      <button className='btn btn-success' onClick={updateVideo}>Update Video</button>
+      </div>
     </div>
   );
 };
