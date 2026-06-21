@@ -1,6 +1,16 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/");
+    window.location.reload();
+  };
+
+
   const userData = JSON.parse(
   localStorage.getItem("isLoggedIn")
 );
@@ -78,7 +88,9 @@ const UserProfile = () => {
 
               </div>
 
-              
+              <button onClick={handleLogout}>
+            Logout
+          </button>
 
             </div>
 

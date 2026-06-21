@@ -1,14 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("isLoggedIn");
 
-  const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    navigate("/");
-    window.location.reload();
-  };
 
   let admin = false;
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
@@ -52,14 +47,10 @@ export default function Navbar() {
           </Link>
         )}
 
-        {!isLoggedIn ? (
+        {!isLoggedIn && (
           <Link to="/login" style={styles.loginBtn}>
             Login
           </Link>
-        ) : (
-          <button onClick={handleLogout} style={styles.logoutBtn}>
-            Logout
-          </button>
         )}
       </div>
     </nav>
