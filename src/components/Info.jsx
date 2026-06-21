@@ -109,7 +109,7 @@ const Info = () => {
         {/* Address  */}
         {/* Copyright  */}
         <h4 className='text-center'>Copyright</h4>
-        <p className='text-center'>© 2026 GateProCS. All rights reserved.</p>
+        <p className='text-center'>© 2026 GATEProCS. All rights reserved.</p>
     </div>
   )
 }

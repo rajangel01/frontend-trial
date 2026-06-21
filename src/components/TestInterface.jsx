@@ -88,11 +88,7 @@ export default function TestInterface() {
     return correct;
   };
 
-  // Count Wrong Questions
-  // const countWrong=()=>{
-  //   let count = 0;
-  //   return count;
-  // }
+
 
   // Calculate Score
   const calculateScore = () => {

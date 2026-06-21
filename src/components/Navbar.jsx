@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <nav style={styles.nav}>
       {/* Logo */}
-      <h5 style={styles.logo}>GATEProCS</h5>
+      <p style={styles.logo}>GATEProCS</p>
 
       {/* Links */}
       <div style={styles.links}>
@@ -91,7 +91,7 @@ const styles = {
   link: {
     color: "white",
     textDecoration: "none",
-    fontSize: "14px",
+    fontSize: "12px",
   },
   loginBtn: {
     padding: "4px 8px",
