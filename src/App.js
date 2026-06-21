@@ -35,7 +35,7 @@ function App() {
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
   if (userData) {
     // console.log(userData.name)
-    if (userData.email === "raj@gmail.com") {
+    if (userData.email === "raj@gmail.com" ||userData.email ==="guptjyoti7800@gmail.com" || userData.email==="rajangel820764@gmail.com"|| userData.email==="shaktimaan6151@gmail.com"||userData.email==="mahtab802111@gmail.com") {
       admin = true;
     }
   }

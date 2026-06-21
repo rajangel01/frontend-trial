@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function OTPLogin() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
   const [showOtpBox, setShowOtpBox] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
+  // const [isVerified, setIsVerified] = useState(false);
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   async function handleLogin() {
-    if (isVerified) {
+    // if (isVerified) {
       try {
+        setLoading(true);
         const res = await fetch("https://gateprocs.vercel.app/login-by-email", {
           method: "POST",
           headers: {
@@ -26,12 +28,14 @@ export default function OTPLogin() {
 
         localStorage.setItem("isLoggedIn", JSON.stringify(data));
         alert("Login Successful");
-        window.open("/home");
+        navigate("/home");
         window.location.reload();
       } catch (err) {
         alert(err.message);
+      }finally{
+        setLoading(false);
       }
-    }
+    // }
   }
 
   const handleVerifyEmail = async () => {
@@ -45,6 +49,7 @@ export default function OTPLogin() {
       }
 
       try {
+        setLoading(true);
         const response = await fetch("https://gateprocs.vercel.app/send-otp", {
           method: "POST",
           headers: {
@@ -65,11 +70,14 @@ export default function OTPLogin() {
         console.log(error);
 
         alert("Failed to send OTP");
+      }finally{
+        setLoading(false)
       }
     }
   };
 
   const handleOtpVerify = async () => {
+    setLoading(true)
     const response = await fetch("https://gateprocs.vercel.app/verify-otp", {
       method: "POST",
       headers: {
@@ -84,13 +92,14 @@ export default function OTPLogin() {
     const data = await response.json();
 
     if (data.success) {
-      setIsVerified(true);
+      // setIsVerified(true);
       handleLogin();
       alert("Email Verified Successfully.");
-      // handleLogin();
+      // navigate("/home");
     } else {
       alert(data.message);
     }
+    setLoading(false);
   };
 
   return (
@@ -123,12 +132,12 @@ export default function OTPLogin() {
 
         {!showOtpBox ? (
           <button onClick={handleVerifyEmail} className="login-btn">
-            Send OTP
+            {loading?"Sending OTP...":"Send OTP"}
           </button>
         ) : (
           <>
             <button onClick={handleOtpVerify} className="login-btn">
-              Verify & Login
+             {loading?"Verifying...":"Verify & Login"}
             </button>
 
             <button
@@ -136,7 +145,7 @@ export default function OTPLogin() {
               className="login-btn"
               style={{ marginTop: "12px" }}
             >
-              Resend OTP
+              Resend OTP{loading?"Resending OTP...":"Resend OTP"}
             </button>
           </>
         )}
