@@ -12,6 +12,7 @@ const UserDashboard = () => {
       <Link to='/leaderboard' className="fw-bold text-light text-decoration-none"><div className="container">All Time Leaderboard</div></Link>
       <Link to='/user-profile' className="fw-bold text-light text-decoration-none"><div className="container">Profile</div></Link> 
       <Link to='/test-history' className="fw-bold text-light text-decoration-none"><div className="container">History</div></Link>
+      <br />
     </div>
   )
 }
