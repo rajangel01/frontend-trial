@@ -149,22 +149,23 @@ export default function TestInterface() {
 
   // Saving answers in database
   const getUserAnswers = () => {
-    // return questions.map((q, index) => {
-    //   let userAnswer = null;
+    return questions.map((q, index) => {
+    let userAnswer = null;
 
-    //   if (q.questionType === "MCQ") {
-    //     userAnswer = correctAnswer[index];
-    //   } else if (q.questionType === "MSQ") {
-    //     userAnswer = correctAnswers[index];
-    //   } else if (q.questionType === "NAT") {
-    //     userAnswer = answer[index];
-    //   }
+    if (q.questionType === "MCQ") {
+      userAnswer = correctAnswer[index] || null;
+    } else if (q.questionType === "MSQ") {
+      userAnswer = correctAnswers[index] || [];
+    } else if (q.questionType === "NAT") {
+      userAnswer = answer[index] || "";
+    }
 
-    //   return {
-    //     qId: q.qId,
-    //     answer: userAnswer,
-    //   };
-    // });
+    return {
+      qId: q.qId,
+      questionType: q.questionType,
+      answer: userAnswer,
+    };
+  });
   };
 
   // Handle NAT Answers
