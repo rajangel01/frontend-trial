@@ -18,6 +18,7 @@ import MonthlyLeaderboard from "./components/MonthlyLeaderboard";
 import Leaderboard from "./components/Leaderboard";
 import OTPLogin from "./components/OTPLogin";
 import UpdateSolutionVideo from "./components/Admin/UpdateSolutionVideo";
+import Result from "./components/Result";
 // import { useState } from "react";
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
         {isLoggedIn&&(<Route path="/test-history" element={<TestHistory />} />)}
         {isLoggedIn&&(<Route path="/daily-leaderboard" element={<DailyLeaderboard />} />)}
         {isLoggedIn&&(<Route path="/monthly-leaderboard" element={<MonthlyLeaderboard />} />)}
+        {isLoggedIn&&(<Route path="/result" element={<Result/>}/>)}
         {isLoggedIn&&(<Route path="/leaderboard" element={<Leaderboard />} />)}
         <Route path="/otp-login" element={<OTPLogin />} />
         

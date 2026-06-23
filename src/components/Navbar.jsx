@@ -23,16 +23,16 @@ export default function Navbar() {
       <div style={styles.links}>
         {isLoggedIn ? (
           <Link to="/home" style={styles.link}>
-            <i class="fa-solid fa-house"></i>
+            <i className="fa-solid fa-house"></i>
           </Link>
         ) : (
           <Link to="/info" style={styles.link}>
-            <i class="fa-solid fa-house"></i>
+            <i className="fa-solid fa-house"></i>
           </Link>
         )}
 
         <Link to="/info" style={styles.link}>
-          <i class="fa-solid fa-circle-info"></i>
+          <i className="fa-solid fa-circle-info"></i>
         </Link>
 
         {admin &&(
@@ -42,7 +42,7 @@ export default function Navbar() {
         )}
         {isLoggedIn && (
           <Link to="/dashboard" style={styles.link}>
-             <i class="fa-solid fa-bars"></i>
+             <i className="fa-solid fa-bars"></i>
           </Link>
         )}
 

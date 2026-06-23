@@ -1,12 +1,40 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 
 const Tests = () => {
+  const [attempted, setAttempted] = useState(false);
   const today = new Date();
 
   const formattedDate = `${today.getDate()}${today.toLocaleString('default', {
     month: 'long',
   })}${today.getFullYear()}`;
+  const userData = JSON.parse(localStorage.getItem("isLoggedIn"))
+  const userId = userData.userId;
+  const testId = formattedDate;
+
+  const handleCheckSubmit = async()=>{
+    try {
+      const res = await fetch("https://gateprocs.vercel.app/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          testId,
+        }),
+      });
+
+      if(res){
+        setAttempted(true);
+      }
+
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
   return (
     <div className="container-fluid">
         <h3>Today's Test</h3>
@@ -18,8 +46,11 @@ const Tests = () => {
               <div className="text">
                 <h5>{formattedDate} || Computer Science</h5>
               </div>
-              <Link to='/testinterface'><button className='btn btn-success'>Attempt Now</button></Link>
+              {attempted?(<Link to='/result'><button className='btn btn-success'>Result</button></Link>):(<Link to='/testinterface'><button className='btn btn-success'>Attempt Now</button></Link>)}
+              
+              
             </div>
+            {/* <Link to='/result'>Result</Link> */}
         </div>
     </div>
   )
