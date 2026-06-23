@@ -1,41 +1,155 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useEffect } from 'react';
 
 const TestHistory = () => {
-  const item = {
-    title: "20Jun2026",
-    score: 30,
-    accuracy: 50,
-    right: 40,
-    wrong: 30,
-    attemptedQuestions: 65,
-    totalQuestions: 65,
-    timetaken: 5000,
-  }
+  const [testHistory, setTestHistory] = useState([]);
+  const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
+  const userId = userData.userId;
+  
+  useEffect(() => {
+  fetch("https://gateprocs.vercel.app/find-user-test-history", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ userId }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setTestHistory(data); // agar backend { history: [...] } return kar raha hai
+    })
+    .catch((err) => console.log(err));
+}, [userId]);
+
   return (
-    <div>
-      <h3>Test History</h3>
-      <div className="history-card" key={item._id}>
+    <div className="containerer mt-4">
 
-    <h3>{item.title}</h3>
+      <div className="card shadow border-0">
 
-    <p>Score : {item.score}</p>
+        <div className="card-header bg-success text-white">
+          <h4 className="mb-0">
+            <i className="fas fa-history me-2"></i>
+            Test History
+          </h4>
+        </div>
 
-    <p>Accuracy : {item.accuracy}%</p>
+        <div className="card-body p-0">
 
-    <p>Right : {item.right}</p>
+          {testHistory.length === 0 ? (
 
-    <p>Wrong : {item.wrong}</p>
+            <div className="text-center p-5">
+              <i className="fas fa-book-open fa-3x text-secondary mb-3"></i>
+              <h5>No Test Attempted Yet</h5>
+            </div>
 
-    <p>Attempted : {item.attemptedQuestions}/{item.totalQuestions}</p>
+          ) : (
 
-    <p>Time Taken : {item.timeTaken} sec</p>
+            <div className="table-responsive">
 
-    <p>
-        Date :
-        {new Date(item.createdAt).toLocaleString()}
-    </p>
+              <table className="table table-hover align-middle mb-0">
 
-</div>
+                <thead className="table-dark">
+
+                  <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Score</th>
+                    <th>Correct</th>
+                    <th>Wrong</th>
+                    <th>Attempted</th>
+                    <th>Accuracy</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  {testHistory.map((test, index) => (
+
+                    <tr key={index}>
+
+                      <td>{index + 1}</td>
+
+                      <td>
+                        <span className="fw-bold">
+                          {test.testId}
+                        </span>
+                      </td>
+
+
+                      <td>
+                        <span className="badge bg-primary fs-6">
+                          {test.score}
+                        </span>
+                      </td>
+
+                      <td className="text-success fw-bold">
+                        {test.correct}
+                      </td>
+
+                      <td className="text-danger fw-bold">
+                        {test.wrong}
+                      </td>
+
+                      <td>
+                        {test.attempted}
+                      </td>
+
+                      <td>
+
+                        <div className="progress" style={{height:"8px"}}>
+
+                          <div
+                            className={`progress-bar ${
+                              test.accuracy >= 80
+                                ? "bg-success"
+                                : test.accuracy >= 60
+                                ? "bg-warning"
+                                : "bg-danger"
+                            }`}
+                            style={{ width: `${test.accuracy}%` }}
+                          ></div>
+
+                        </div>
+
+                        <small>{test.accuracy}%</small>
+
+                      </td>
+
+                      <td>{test.actualTimeTaken}</td>
+
+                      <td>
+
+                        {test.score >= 28 ? (
+                          <span className="badge bg-success">
+                            Passed
+                          </span>
+                        ) : (
+                          <span className="badge bg-danger">
+                            Failed
+                          </span>
+                        )}
+
+                      </td>
+
+                    </tr>
+
+                  ))}
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          )}
+
+        </div>
+
+      </div>
+
     </div>
   )
 }

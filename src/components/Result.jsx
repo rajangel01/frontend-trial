@@ -83,7 +83,7 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
       } catch (err) {
         alert(err.message);
       }
-    }, [userId, testId]);;
+    }, [userId, testId]);
   
     useEffect(() => {
       handleCheckSubmit();
