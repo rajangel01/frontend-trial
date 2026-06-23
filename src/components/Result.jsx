@@ -1,17 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 // import { useState } from "react";
+import { useCallback } from "react";
+import { useEffect } from "react";
 
 const Result = () => {
 //   const [questions, setQuestions] = useState([]);
 //   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const score = 0;
-  const actualTimeTaken = 600;
-  const attempted = 60;
-  const correct = 30;
-  const wrong = 30;
-  const unattempted = 5;
+const [score, setScore] = useState(0);
+const [actualTimeTaken, setActualTimeTaken]=useState(0);
+const[attempted, setAttempted]=useState(0);
+const[correct, setCorrect]= useState(0);
+const [wrong, setWrong] = useState(0);
+const [unattempted, setUnattempted] = useState(0);
+const [accuracy, setAccuracy] = useState(0);
+ const today = new Date();
+
+const testId =  `${today.getDate()}${today.toLocaleString("default", {
+    month: "long",
+  })}${today.getFullYear()}`;
+
+const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
+  const userId = userData.userId;
+  // const score = 0;
+  // const actualTimeTaken = 600;
+  // const attempted = 60;
+  // const correct = 30;
+  // const wrong = 30;
+  // const unattempted = 5;
 //   const answers = [];
-  const accuracy = 50;
+  // const accuracy = 50;
 
 //   const fetchQuestions = async () => {
 //     try {
@@ -33,6 +50,44 @@ const Result = () => {
 
     return `${hrs}h ${mins}m ${secs}s`;
   };
+
+
+  const handleCheckSubmit = useCallback( async () => {
+      try {
+        const res = await fetch(
+          "https://gateprocs.vercel.app/find-users-todays-test",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              userId,
+              testId,
+            }),
+          },
+        );
+  
+        const data = await res.json();
+  
+        if (data.userId) {
+          setAccuracy(data.accuracy)
+          setActualTimeTaken(data.timeTaken)
+          setScore(data.score)
+          setCorrect(data.correct)
+          setUnattempted(data.unattempted)
+          setWrong(data.wrong)
+          setAttempted(data.attempted)
+          // console.log(data)
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+    }, [userId, testId]);;
+  
+    useEffect(() => {
+      handleCheckSubmit();
+    }, [handleCheckSubmit]);
 
   return (
     <>
