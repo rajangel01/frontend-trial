@@ -88,8 +88,6 @@ export default function TestInterface() {
     return correct;
   };
 
-
-
   // Calculate Score
   const calculateScore = () => {
     let score = 0;
@@ -150,22 +148,22 @@ export default function TestInterface() {
   // Saving answers in database
   const getUserAnswers = () => {
     return questions.map((q, index) => {
-    let userAnswer = null;
+      let userAnswer = null;
 
-    if (q.questionType === "MCQ") {
-      userAnswer = correctAnswer[index] || null;
-    } else if (q.questionType === "MSQ") {
-      userAnswer = correctAnswers[index] || [];
-    } else if (q.questionType === "NAT") {
-      userAnswer = answer[index] || "";
-    }
+      if (q.questionType === "MCQ") {
+        userAnswer = correctAnswer[index] || null;
+      } else if (q.questionType === "MSQ") {
+        userAnswer = correctAnswers[index] || [];
+      } else if (q.questionType === "NAT") {
+        userAnswer = answer[index] || "";
+      }
 
-    return {
-      qId: q.qId,
-      questionType: q.questionType,
-      answer: userAnswer,
-    };
-  });
+      return {
+        qId: q.qId,
+        questionType: q.questionType,
+        answer: userAnswer,
+      };
+    });
   };
 
   // Handle NAT Answers
@@ -480,9 +478,27 @@ export default function TestInterface() {
             <div className="card-body">
               <div className="d-flex flex-wrap gap-2">
                 {questions.map((_, index) => {
+                  // let btnClass = "btn btn-outline-secondary";
+
+                  // if (answer[index] !== undefined) {
+                  //   btnClass = "btn btn-success";
+                  // }
+
+                  // if (reviewQuestions.includes(index)) {
+                  //   btnClass = "btn btn-warning";
+                  // }
                   let btnClass = "btn btn-outline-secondary";
 
-                  if (answer[index] !== undefined) {
+                  const isAttempted =
+                    (questions[index].questionType === "MCQ" &&
+                      correctAnswer[index] !== undefined) ||
+                    (questions[index].questionType === "MSQ" &&
+                      (correctAnswers[index]?.length || 0) > 0) ||
+                    (questions[index].questionType === "NAT" &&
+                      answer[index] !== undefined &&
+                      answer[index] !== "");
+
+                  if (isAttempted) {
                     btnClass = "btn btn-success";
                   }
 
