@@ -261,7 +261,7 @@ export default function TestInterface() {
         console.log(data.result);
 
         // Result page pe bhej sakte ho
-        navigate("/");
+        navigate("/test");
         window.location.reload();
       }
     } catch (error) {
