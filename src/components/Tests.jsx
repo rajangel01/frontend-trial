@@ -34,6 +34,7 @@ const Tests = () => {
       alert(err.message);
     }
   }
+  // console.log(handleCheckSubmit)
 
   return (
     <div className="container-fluid">
