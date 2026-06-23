@@ -13,9 +13,7 @@ const Tests = () => {
   const userId = userData.userId;
   const testId = formattedDate;
 
-  useEffect(() => {
-    handleCheckSubmit();
-  }, []);
+  
 
   const handleCheckSubmit = async () => {
     try {
@@ -44,6 +42,10 @@ const Tests = () => {
       alert(err.message);
     }
   };
+
+  useEffect(() => {
+    handleCheckSubmit();
+  }, []);
   // console.log(handleCheckSubmit)
 
   return (
