@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const Tests = () => {
   const [attempted, setAttempted] = useState(false);
@@ -15,7 +15,7 @@ const Tests = () => {
 
   
 
-  const handleCheckSubmit = async () => {
+  const handleCheckSubmit = useCallback( async () => {
     try {
       const res = await fetch(
         "https://gateprocs.vercel.app/find-users-todays-test",
@@ -41,11 +41,11 @@ const Tests = () => {
     } catch (err) {
       alert(err.message);
     }
-  };
+  }, [userId, testId]);;
 
   useEffect(() => {
     handleCheckSubmit();
-  }, []);
+  }, [handleCheckSubmit]);
   // console.log(handleCheckSubmit)
 
   return (
