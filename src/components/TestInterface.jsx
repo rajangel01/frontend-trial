@@ -196,70 +196,70 @@ export default function TestInterface() {
   };
 
   const handleSubmit = async () => {
-  if (submitted.current) return;
-  submitted.current = true;
+    if (submitted.current) return;
+    submitted.current = true;
 
-  const attempted = getAttemptedCount();
-  const correct = countCorrect();
-  const wrong = attempted - correct;
-  const unattempted = questions.length - attempted;
-  const actualTimeTaken = TOTAL_TIME - timeTaken;
-  const score = calculateScore();
-  const accuracy = calculateAccuracy(correct, attempted);
-  const answers = getUserAnswers();
+    const attempted = getAttemptedCount();
+    const correct = countCorrect();
+    const wrong = attempted - correct;
+    const unattempted = questions.length - attempted;
+    const actualTimeTaken = TOTAL_TIME - timeTaken;
+    const score = calculateScore();
+    const accuracy = calculateAccuracy(correct, attempted);
+    const answers = getUserAnswers();
 
-  try {
-    const response = await fetch("https://gateprocs.vercel.app/submit-test", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        testId,
-        userId,
-        attempted,
-        unattempted,
-        correct,
-        wrong,
-        score,
-        accuracy,
-        actualTimeTaken,
-        answers,
-      }),
-    });
+    try {
+      const response = await fetch("https://gateprocs.vercel.app/submit-test", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          testId,
+          userId,
+          attempted,
+          unattempted,
+          correct,
+          wrong,
+          score,
+          accuracy,
+          actualTimeTaken,
+          answers,
+        }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      alert("Test Submitted Successfully");
-      navigate("/tests");
-      window.location.reload();
+      if (data.success) {
+        alert("Test Submitted Successfully");
+        navigate("/tests");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+      submitted.current = false;
     }
-  } catch (error) {
-    console.log(error);
-    submitted.current = false;
-  }
-};
+  };
 
   useEffect(() => {
-  const timer = setInterval(() => {
-    setTimeLeft((prev) => {
-      if (prev <= 1) {
-        clearInterval(timer);
-        return 0;
-      }
-      return prev - 1;
-    });
-  }, 1000);
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-  return () => clearInterval(timer);
-}, []);
+    return () => clearInterval(timer);
+  }, []);
 
-useEffect(() => {
+  useEffect(() => {
     if (timeTaken === 0) {
-        submitButtonRef.current?.click();
+      submitButtonRef.current?.click();
     }
-}, [timeTaken]);
+  }, [timeTaken]);
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -344,12 +344,41 @@ useEffect(() => {
                     const optionLetter = String.fromCharCode(65 + index);
 
                     return (
-                      <div
+                      // <div
+                      //   key={index}
+                      //   className="form-check border rounded p-3 mb-2"
+                      // >
+                      //   <input
+                      //     type="radio"
+                      //     className="form-check-input"
+                      //     name="option"
+                      //     checked={
+                      //       correctAnswer[currentQuestion] === optionLetter
+                      //     }
+                      //     onChange={() => handleOptionSelect(optionLetter)}
+                      //   />
+
+                      //   <label className="form-check-label ms-2">
+                      //     {optionLetter}. {option.text}
+                      //   </label>
+
+                      //   {option.image && (
+                      //     <img
+                      //       src={option.image}
+                      //       alt=""
+                      //       className="img-fluid d-block mt-2"
+                      //     />
+                      //   )}
+                      // </div>
+                      <label
                         key={index}
-                        className="form-check border rounded p-3 mb-2"
+                        htmlFor={`option-${currentQuestion}-${index}`}
+                        className="form-check border rounded p-3 mb-2 d-block"
+                        style={{ cursor: "pointer" }}
                       >
                         <input
                           type="radio"
+                          id={`option-${currentQuestion}-${index}`}
                           className="form-check-input"
                           name="option"
                           checked={
@@ -358,9 +387,9 @@ useEffect(() => {
                           onChange={() => handleOptionSelect(optionLetter)}
                         />
 
-                        <label className="form-check-label ms-2">
-                          {optionLetter}. {option.text}
-                        </label>
+                        <span className="ms-2">
+                          <strong>{optionLetter}.</strong> {option.text}
+                        </span>
 
                         {option.image && (
                           <img
@@ -369,7 +398,7 @@ useEffect(() => {
                             className="img-fluid d-block mt-2"
                           />
                         )}
-                      </div>
+                      </label>
                     );
                   })}
                 </div>
@@ -495,7 +524,11 @@ useEffect(() => {
 
               <hr />
 
-              <button className="btn btn-danger w-100" ref={submitButtonRef} onClick={handleSubmit}>
+              <button
+                className="btn btn-danger w-100"
+                ref={submitButtonRef}
+                onClick={handleSubmit}
+              >
                 Submit Test
               </button>
             </div>
