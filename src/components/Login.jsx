@@ -1,7 +1,8 @@
 
 
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 
 function Login() {
@@ -34,12 +35,15 @@ function Login() {
 
       const data = await res.json();
 
+      if (!res.ok) {
+      throw new Error(data.message || "Login Failed");
+    }
+
       localStorage.setItem("isLoggedIn", JSON.stringify(data));
 
       alert("Login Successful");
-
-      navigate("/home");
-      // window.location.reload();
+      navigate("/home")
+      window.location.reload();
     } catch (err) {
       alert(err.message);
     } finally {
