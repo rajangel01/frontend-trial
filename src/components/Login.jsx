@@ -39,7 +39,7 @@ function Login() {
       alert("Login Successful");
 
       navigate("/home");
-      window.location.reload();
+      // window.location.reload();
     } catch (err) {
       alert(err.message);
     } finally {
