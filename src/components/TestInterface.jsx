@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 // import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+// import { useCallback } from "react";
+import { useRef } from "react";
 
 export default function TestInterface() {
   const navigate = useNavigate();
+  const submitButtonRef = useRef(null);
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answer, setAnswer] = useState(0);
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [correctAnswers, setCorrectAnswers] = useState([]);
-
+  const submitted = useRef(false);
   // const [answers, setAnswers] = useState({});
   const [reviewQuestions, setReviewQuestions] = useState([]);
   const [timeTaken, setTimeLeft] = useState(3 * 60 * 60); // 3 hours
@@ -193,99 +196,70 @@ export default function TestInterface() {
   };
 
   const handleSubmit = async () => {
-    const attempted = await getAttemptedCount();
-    const correct = await countCorrect();
-    const wrong = attempted - correct;
-    const unattempted = questions.length - attempted;
-    const actualTimeTaken = TOTAL_TIME - timeTaken;
-    const score = await calculateScore();
-    const accuracy = calculateAccuracy(correct, attempted);
-    const answers = getUserAnswers();
-    console.log("Total Correct: " + correct);
-    console.log("Total Wrong: " + wrong);
-    console.log("Answers:" + answer, correctAnswer, correctAnswers);
-    console.log("All correct answers: ");
-    console.log("Score is : " + score);
-    console.log("Accuracy: " + accuracy);
+  if (submitted.current) return;
+  submitted.current = true;
 
-    questions.forEach((q) => {
-      console.log("Question ID:", q.qId);
+  const attempted = getAttemptedCount();
+  const correct = countCorrect();
+  const wrong = attempted - correct;
+  const unattempted = questions.length - attempted;
+  const actualTimeTaken = TOTAL_TIME - timeTaken;
+  const score = calculateScore();
+  const accuracy = calculateAccuracy(correct, attempted);
+  const answers = getUserAnswers();
 
-      if (q.questionType === "MCQ") {
-        console.log("Correct Answer:", q.correctAnswer);
-      }
-
-      if (q.questionType === "MSQ") {
-        console.log("Correct Answers:", q.correctAnswers);
-      }
-
-      if (q.questionType === "NAT") {
-        console.log("Correct Answer:", q.answer);
-      }
-
-      console.log("------------------");
+  try {
+    const response = await fetch("https://gateprocs.vercel.app/submit-test", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        testId,
+        userId,
+        attempted,
+        unattempted,
+        correct,
+        wrong,
+        score,
+        accuracy,
+        actualTimeTaken,
+        answers,
+      }),
     });
 
-    console.log("Attempted Questions: " + attempted);
-    console.log("Unattempted Questions: " + unattempted);
-    console.log("Test ID: " + testId);
-    console.log("Time taken to submit this test series: " + actualTimeTaken);
-    console.log("User Id: " + userId);
-    try {
-      const response = await fetch("https://gateprocs.vercel.app/submit-test", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          testId,
-          userId,
-          attempted,
-          unattempted,
-          correct,
-          wrong,
-          score,
-          accuracy,
-          actualTimeTaken,
-          answers,
-        }),
-      });
+    const data = await response.json();
 
-      const data = await response.json();
-
-      if (data.success) {
-        alert("Test Submitted Successfully");
-
-        console.log(data.result);
-
-        // Result page pe bhej sakte ho
-        navigate("/tests");
-        window.location.reload();
-      }
-    } catch (error) {
-      console.log(error);
+    if (data.success) {
+      alert("Test Submitted Successfully");
+      navigate("/tests");
+      window.location.reload();
     }
-    alert("Test Submitted");
-  };
+  } catch (error) {
+    console.log(error);
+    submitted.current = false;
+  }
+};
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
+  const timer = setInterval(() => {
+    setTimeLeft((prev) => {
+      if (prev <= 1) {
+        clearInterval(timer);
+        return 0;
+      }
+      return prev - 1;
+    });
+  }, 1000);
 
-          // Auto Submit
-          // handleSubmit();
+  return () => clearInterval(timer);
+}, []);
 
-          return 0;
-        }
-
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
+useEffect(() => {
+    if (timeTaken === 0) {
+        submitButtonRef.current?.click();
+    }
+}, [timeTaken]);
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -521,7 +495,7 @@ export default function TestInterface() {
 
               <hr />
 
-              <button className="btn btn-danger w-100" onClick={handleSubmit}>
+              <button className="btn btn-danger w-100" ref={submitButtonRef} onClick={handleSubmit}>
                 Submit Test
               </button>
             </div>

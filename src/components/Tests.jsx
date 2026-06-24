@@ -55,7 +55,7 @@ const Tests = () => {
 
   const TestInterface = ()=>{
     navigate("/testinterface");
-    window.location.reloaad();
+    // window.location.reloaad();
   }
 
   return (
@@ -78,7 +78,7 @@ const Tests = () => {
               <button className="btn btn-success">Result</button>
             </Link>
           ) : (
-            <button className="btn btn-success" onClick={TestInterface}>{disabled?"Loading...":"Attempt Now"}</button>
+            <button className="btn btn-success" disabled={disabled} onClick={TestInterface}>{disabled?"Loading...":"Attempt Now"}</button>
             
           )}
         </div>

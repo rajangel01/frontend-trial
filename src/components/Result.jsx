@@ -2,8 +2,10 @@ import React, { useState } from "react";
 // import { useState } from "react";
 import { useCallback } from "react";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Result = () => {
+  const[notSubmitted, setNotSubmitted] = useState(false);
 //   const [questions, setQuestions] = useState([]);
 //   const [currentQuestion, setCurrentQuestion] = useState(0);
 const [score, setScore] = useState(0);
@@ -79,6 +81,8 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
           setWrong(data.wrong)
           setAttempted(data.attempted)
           // console.log(data)
+        }else{
+          setNotSubmitted(true)
         }
       } catch (err) {
         alert(err.message);
@@ -88,6 +92,14 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
     useEffect(() => {
       handleCheckSubmit();
     }, [handleCheckSubmit]);
+
+    if(notSubmitted){
+      return(
+        <div className="container">
+          <h5 className="text-center">Today you haven't submitted test, <Link to='/testinterface'>attempt test</Link>  to see your result.</h5>
+        </div>
+      )
+    }
 
   return (
     <>
