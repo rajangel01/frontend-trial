@@ -1,41 +1,46 @@
-import React from 'react'
+import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { useCallback } from "react";
 
 const MonthlyLeaderboard = () => {
-  const leaderboard = [
-    {
-      rank: 1,
-      name: "Rahul",
-      score: 68,
-      correct: 24,
-      accuracy: 92,
-      actualTimeTaken: "41m 20s"
-    },
-    {
-      rank: 2,
-      name: "Priya",
-      score: 65,
-      correct: 23,
-      accuracy: 89,
-      actualTimeTaken: "43m 05s"
-    },
-    {
-      rank: 3,
-      name: "Aman",
-      score: 64,
-      correct: 23,
-      accuracy: 87,
-      actualTimeTaken: "45m 18s"
-    },
-    {
-      rank: 4,
-      name: "Raj",
-      score: 62,
-      correct: 22,
-      accuracy: 84,
-      actualTimeTaken: "46m 02s",
-      isCurrentUser: true
+  const [leaderboard, setLeaderboard] = useState([]);
+  const today = new Date();
+  const formattedDate = `${today.toLocaleString("default", {
+    month: "long",
+  })}${today.getFullYear()}`;
+  const testId = formattedDate;
+
+const getLeaderboard = useCallback(async () => {
+  try {
+    const res = await fetch(
+      "https://gateprocs.vercel.app/monthly-leaderboard",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          testId,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Failed");
     }
-  ];
+
+    setLeaderboard(data);
+  } catch (err) {
+    console.log(err);
+  }
+}, [testId]);
+
+useEffect(() => {
+  getLeaderboard();
+}, [getLeaderboard]);
 
   return (
     <div className="containerer my-4">
@@ -78,7 +83,7 @@ const MonthlyLeaderboard = () => {
 
         <div className="card-header bg-primary text-white">
           <h4 className="mb-0">
-            🏅 Monthly Leaderboard
+            🏅 Leaderboard
           </h4>
         </div>
 
@@ -102,7 +107,7 @@ const MonthlyLeaderboard = () => {
               {leaderboard.map((user) => (
 
                 <tr
-                  key={user.rank}
+                  key={user.user}
                   className={user.isCurrentUser ? "table-warning fw-bold" : ""}
                 >
 
@@ -186,6 +191,6 @@ const MonthlyLeaderboard = () => {
 
     </div>
   );
-}
+};
 
-export default MonthlyLeaderboard
+export default MonthlyLeaderboard;

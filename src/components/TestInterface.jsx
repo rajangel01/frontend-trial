@@ -344,32 +344,7 @@ export default function TestInterface() {
                     const optionLetter = String.fromCharCode(65 + index);
 
                     return (
-                      // <div
-                      //   key={index}
-                      //   className="form-check border rounded p-3 mb-2"
-                      // >
-                      //   <input
-                      //     type="radio"
-                      //     className="form-check-input"
-                      //     name="option"
-                      //     checked={
-                      //       correctAnswer[currentQuestion] === optionLetter
-                      //     }
-                      //     onChange={() => handleOptionSelect(optionLetter)}
-                      //   />
-
-                      //   <label className="form-check-label ms-2">
-                      //     {optionLetter}. {option.text}
-                      //   </label>
-
-                      //   {option.image && (
-                      //     <img
-                      //       src={option.image}
-                      //       alt=""
-                      //       className="img-fluid d-block mt-2"
-                      //     />
-                      //   )}
-                      // </div>
+                      
                       <label
                         key={index}
                         htmlFor={`option-${currentQuestion}-${index}`}

@@ -1,41 +1,65 @@
 import React from 'react'
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useCallback } from 'react';
 
 const DailyLeaderboard = () => {
-  const leaderboard = [
-    {
-      rank: 1,
-      name: "Rahul",
-      score: 68,
-      correct: 24,
-      accuracy: 92,
-      actualTimeTaken: "41m 20s"
-    },
-    {
-      rank: 2,
-      name: "Priya",
-      score: 65,
-      correct: 23,
-      accuracy: 89,
-      actualTimeTaken: "43m 05s"
-    },
-    {
-      rank: 3,
-      name: "Aman",
-      score: 64,
-      correct: 23,
-      accuracy: 87,
-      actualTimeTaken: "45m 18s"
-    },
-    {
-      rank: 4,
-      name: "Raj",
-      score: 62,
-      correct: 22,
-      accuracy: 84,
-      actualTimeTaken: "46m 02s",
-      isCurrentUser: true
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [avgScore, setAvgScore] = useState();
+  const [rank, setRank] = useState();
+  const [accuracy, setAccuracy] = useState();
+  const [ userScore, setUserScore] = useState();
+  // const [ averageScore, setAverageScore] = useState();
+  const[totalParticipant, setTotalParticipant] = useState();
+  const[score, setScore] = useState();
+
+  const today = new Date();
+  const formattedDate = `${today.getDate()}${today.toLocaleString("default", {
+    month: "long",
+  })}${today.getFullYear()}`;
+  // const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
+  // const userId = userData.userId;
+  const testId = formattedDate;
+  const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
+  const userId = userData.userId;
+
+  const getLeaderboard = useCallback(async () => {
+    try {
+      const res = await fetch(
+        "https://gateprocs.vercel.app/get-todays-leaderboard",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            testId,
+            userId,
+          }),
+        }
+      );
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.message || "Failed");
+      }
+  
+      setLeaderboard(data.leaderboard);
+      setAvgScore(data.averageScore);
+      setRank(data.rank);
+      setAccuracy(data.accuracy);
+      setUserScore(data.userScore);
+      setScore(data.score);
+      setTotalParticipant(data.totalParticipants)
+    } catch (err) {
+      console.log(err);
     }
-  ];
+  }, [testId, userId]);
+  
+  useEffect(() => {
+    getLeaderboard();
+  }, [getLeaderboard]);
 
   return (
     <div className="containerer my-4">
@@ -47,7 +71,7 @@ const DailyLeaderboard = () => {
           <div className="card shadow-sm text-center">
             <div className="card-body">
               <h5>🏆 Your Rank</h5>
-              <h2>#4</h2>
+              <h2>{rank}</h2>
             </div>
           </div>
         </div>
@@ -56,7 +80,7 @@ const DailyLeaderboard = () => {
           <div className="card shadow-sm text-center">
             <div className="card-body">
               <h5>🎯 Your Score</h5>
-              <h2>62</h2>
+              <h2>{userScore}</h2>
             </div>
           </div>
         </div>
@@ -65,7 +89,7 @@ const DailyLeaderboard = () => {
           <div className="card shadow-sm text-center">
             <div className="card-body">
               <h5>📊 Accuracy</h5>
-              <h2>84%</h2>
+              <h2>{accuracy}</h2>
             </div>
           </div>
         </div>
@@ -78,7 +102,7 @@ const DailyLeaderboard = () => {
 
         <div className="card-header bg-primary text-white">
           <h4 className="mb-0">
-            🏅 Daily Leaderboard
+            🏅 Leaderboard
           </h4>
         </div>
 
@@ -102,7 +126,7 @@ const DailyLeaderboard = () => {
               {leaderboard.map((user) => (
 
                 <tr
-                  key={user.rank}
+                  key={user.userId}
                   className={user.isCurrentUser ? "table-warning fw-bold" : ""}
                 >
 
@@ -164,21 +188,21 @@ const DailyLeaderboard = () => {
         <div className="col-md-4">
           <div className="alert alert-primary mb-2">
             <strong>Total Participants</strong><br />
-            538
+            {totalParticipant}
           </div>
         </div>
 
         <div className="col-md-4">
           <div className="alert alert-success mb-2">
             <strong>Highest Score</strong><br />
-            71
+            {score}
           </div>
         </div>
 
         <div className="col-md-4">
           <div className="alert alert-warning mb-2">
             <strong>Average Score</strong><br />
-            42.8
+            {avgScore}
           </div>
         </div>
 
