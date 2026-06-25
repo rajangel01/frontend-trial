@@ -83,7 +83,7 @@ useEffect(() => {
 
         <div className="card-header bg-primary text-white">
           <h4 className="mb-0">
-            🏅 Leaderboard
+            🏅 Monthly Leaderboard
           </h4>
         </div>
 
@@ -121,7 +121,7 @@ useEffect(() => {
                   </td>
 
                   <td>
-                    {user.name}
+                    {user.userId}
                     {user.isCurrentUser && (
                       <span className="badge bg-success ms-2">
                         You
@@ -148,7 +148,7 @@ useEffect(() => {
 
                   </td>
 
-                  <td>{user.actualTimeTaken}</td>
+                  <td>{user.timeTaken}</td>
 
                 </tr>
 

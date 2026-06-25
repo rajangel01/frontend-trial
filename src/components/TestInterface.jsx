@@ -139,13 +139,13 @@ export default function TestInterface() {
         }
       }
     });
-    return score;
+    return score.toFixed(3);
   };
 
   // Calculate Accuracy
   const calculateAccuracy = (correct, attempted) => {
     let accuracy = (correct / attempted) * 100;
-    return accuracy;
+    return accuracy.toFixed(3);
   };
 
   // Saving answers in database
