@@ -204,8 +204,8 @@ export default function TestInterface() {
     const wrong = attempted - correct;
     const unattempted = questions.length - attempted;
     const actualTimeTaken = TOTAL_TIME - timeTaken;
-    const score = calculateScore();
-    const accuracy = calculateAccuracy(correct, attempted);
+    const score = calculateScore().toFixed(3);
+    const accuracy = calculateAccuracy(correct, attempted).toFixed(3);
     const answers = getUserAnswers();
 
     try {
