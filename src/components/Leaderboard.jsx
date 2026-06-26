@@ -13,13 +13,13 @@ const Leaderboard = () =>{
   const[totalParticipant, setTotalParticipant] = useState();
   const[score, setScore] = useState();
 
-  const today = new Date();
-  const formattedDate = `${today.getDate()}${today.toLocaleString("default", {
-    month: "long",
-  })}${today.getFullYear()}`;
+  // const today = new Date();
+  // const formattedDate = `${today.getDate()}${today.toLocaleString("default", {
+  //   month: "long",
+  // })}${today.getFullYear()}`;
   // const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
   // const userId = userData.userId;
-  const testId = formattedDate;
+  // const testId = "202";
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
   const userId = userData.userId;
 
@@ -41,7 +41,7 @@ const Leaderboard = () =>{
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            testId,
+            // testId,
             userId,
           }),
         }
@@ -63,7 +63,7 @@ const Leaderboard = () =>{
     } catch (err) {
       console.log(err);
     }
-  }, [testId, userId]);
+  }, [ userId]);
   
   useEffect(() => {
     getLeaderboard();

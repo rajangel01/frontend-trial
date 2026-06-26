@@ -23,16 +23,19 @@ export default function Navbar() {
       <div style={styles.links}>
         {isLoggedIn ? (
           <Link to="/home" style={styles.link}>
-            <i className="fa-solid fa-house"></i>
+            {/* <i className="fa-solid fa-house"></i> */}
+            Home
           </Link>
         ) : (
           <Link to="/info" style={styles.link}>
-            <i className="fa-solid fa-house"></i>
+            {/* <i className="fa-solid fa-house"></i> */}
+            Info
           </Link>
         )}
 
         <Link to="/info" style={styles.link}>
-          <i className="fa-solid fa-circle-info"></i>
+          {/* <i className="fa-solid fa-circle-info"></i> */}
+          Info
         </Link>
 
         {admin &&(
