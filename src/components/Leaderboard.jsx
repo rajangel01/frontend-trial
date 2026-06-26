@@ -23,6 +23,14 @@ const Leaderboard = () =>{
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
   const userId = userData.userId;
 
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    return `${hrs}h ${mins}m ${secs}s`;
+  };
+
   const getLeaderboard = useCallback(async () => {
     try {
       const res = await fetch(
@@ -112,7 +120,7 @@ const Leaderboard = () =>{
             <thead className="table-dark">
               <tr>
                 <th>Rank</th>
-                <th>Name</th>
+                <th>UserID</th>
                 <th>Score</th>
                 <th>Correct</th>
                 <th>Accuracy</th>
@@ -122,24 +130,24 @@ const Leaderboard = () =>{
 
             <tbody>
 
-              {leaderboard.map((user) => (
+              {leaderboard.map((user,index) => (
 
                 <tr
-                  key={user.userId}
+                  key={index+1}
                   className={user.isCurrentUser ? "table-warning fw-bold" : ""}
                 >
 
                   <td style={{fontSize:"20px"}}>
 
-                    {user.rank === 1 && "🥇"}
-                    {user.rank === 2 && "🥈"}
-                    {user.rank === 3 && "🥉"}
-                    {user.rank > 3 && "#" + user.rank}
+                    {index+1 === 1 && "🥇"}
+                    {index+1 === 2 && "🥈"}
+                    {index+1 === 3 && "🥉"}
+                    {index+1 > 3 && "#" + index}
 
                   </td>
 
                   <td>
-                    {user.name}
+                    {user.userId}
                     {user.isCurrentUser && (
                       <span className="badge bg-success ms-2">
                         You
@@ -166,7 +174,7 @@ const Leaderboard = () =>{
 
                   </td>
 
-                  <td>{user.actualTimeTaken}</td>
+                  <td>{formatTime(user.timeTaken)}</td>
 
                 </tr>
 
