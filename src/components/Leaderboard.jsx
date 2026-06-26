@@ -13,20 +13,20 @@ const Leaderboard = () =>{
   const[totalParticipant, setTotalParticipant] = useState();
   const[score, setScore] = useState();
 
-  // const today = new Date();
-  // const formattedDate = `${today.getDate()}${today.toLocaleString("default", {
-  //   month: "long",
-  // })}${today.getFullYear()}`;
+  const today = new Date();
+  const formattedDate = `${today.getDate()}${today.toLocaleString("default", {
+    month: "long",
+  })}${today.getFullYear()}`;
   // const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
   // const userId = userData.userId;
-  const testId = "6";
+  const testId = formattedDate;
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
   const userId = userData.userId;
 
   const getLeaderboard = useCallback(async () => {
     try {
       const res = await fetch(
-        "https://gateprocs.vercel.app/get-todays-leaderboard",
+        "https://gateprocs.vercel.app/get-all-time-leaderboard",
         {
           method: "POST",
           headers: {
