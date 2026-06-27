@@ -21,6 +21,14 @@ const TestHistory = () => {
       .catch((err) => console.log(err));
   }, [userId]);
 
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    return `${hrs}h ${mins}m ${secs}s`;
+  };
+
   return (
     <div className="containerer mt-4">
       <div className="card shadow border-0">
@@ -92,7 +100,7 @@ const TestHistory = () => {
                         <small>{test.accuracy}%</small>
                       </td>
 
-                      <td>{test.actualTimeTaken}</td>
+                      <td>{formatTime(test.timeTaken)}</td>
 
                       <td>
                         {test.score >= 28 ? (

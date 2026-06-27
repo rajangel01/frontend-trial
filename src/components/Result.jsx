@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import { useCallback } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Result = () => {
+  const navigate = useNavigate();
+  const [detailed, setDetailed] = useState(false);
   const[notSubmitted, setNotSubmitted] = useState(false);
-//   const [questions, setQuestions] = useState([]);
-//   const [currentQuestion, setCurrentQuestion] = useState(0);
 const [score, setScore] = useState(0);
 const [actualTimeTaken, setActualTimeTaken]=useState(0);
 const[attempted, setAttempted]=useState(0);
@@ -23,27 +24,11 @@ const testId =  `${today.getDate()}${today.toLocaleString("default", {
 
 const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
   const userId = userData.userId;
-  // const score = 0;
-  // const actualTimeTaken = 600;
-  // const attempted = 60;
-  // const correct = 30;
-  // const wrong = 30;
-  // const unattempted = 5;
-//   const answers = [];
-  // const accuracy = 50;
 
-//   const fetchQuestions = async () => {
-//     try {
-//       const res = await fetch("https://gateprocs.vercel.app/daily-test");
-
-//       const data = await res.json();
-
-//       setQuestions(data.questions);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-//   const q = questions[currentQuestion];
+  const gotoHome = ()=>{
+    navigate("/home");
+    window.location.reload();
+  }
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -52,6 +37,14 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
 
     return `${hrs}h ${mins}m ${secs}s`;
   };
+
+  const showSolution = ()=>{
+    setDetailed(true);
+  }
+
+  const closeSolution = ()=>{
+    setDetailed(false);
+  }
 
 
   const handleCheckSubmit = useCallback( async () => {
@@ -101,7 +94,21 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
       )
     }
 
-  return (
+  if(detailed){
+    return(
+      <>
+        <h5>Detailed Analysis</h5>
+        <div className="col-4 col-md-3">
+          <button className="btn btn-primary w-100" onClick={closeSolution}>
+            <i className="fas fa-book-open me-2"></i>
+            <span className="d-none d-md-inline">Close</span>
+            <span className="d-inline d-md-none">Close</span>
+          </button>
+        </div>
+      </>
+    );
+  }else{
+    return (
     <>
       <div className="card shadow-lg border-0 rounded-4 mb-4 bg-success text-white">
         <div className="card-body text-center py-4">
@@ -116,7 +123,7 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
       </div>
       {/* ======================= Dashboard ======================= */}
 
-      <div className="row g-3 mt-3">
+      <div className="row g-2 mt-2">
         {/* Score */}
         <div className="col-6 col-md-6 col-lg-3">
           <div className="card shadow border-0 rounded-4 h-100">
@@ -209,15 +216,15 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
       </div>
       <div className="row mt-5 g-2 justify-content-center">
         <div className="col-4 col-md-3">
-          <button className="btn btn-success w-100">
-            <i className="fas fa-redo-alt me-2"></i>
-            <span className="d-none d-md-inline">Reattempt</span>
-            <span className="d-inline d-md-none">Retry</span>
+          <button className="btn btn-success w-100" onClick={() => window.print()}>
+            <i class="fa-solid fa-print"></i>
+            <span className="d-none d-md-inline">Print</span>
+            <span className="d-inline d-md-none">Print</span>
           </button>
         </div>
 
         <div className="col-4 col-md-3">
-          <button className="btn btn-primary w-100">
+          <button className="btn btn-primary w-100" onClick={showSolution}>
             <i className="fas fa-book-open me-2"></i>
             <span className="d-none d-md-inline">Solution</span>
             <span className="d-inline d-md-none">Solution</span>
@@ -225,7 +232,7 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
         </div>
 
         <div className="col-4 col-md-3">
-          <button className="btn btn-dark w-100">
+          <button className="btn btn-dark w-100" onClick={gotoHome}>
             <i className="fas fa-home me-2"></i>
             <span className="d-none d-md-inline">Home</span>
             <span className="d-inline d-md-none">Home</span>
@@ -236,6 +243,7 @@ const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
       <br />
     </>
   );
+  }
 };
 
 export default Result;
