@@ -4,39 +4,64 @@ import { useEffect } from "react";
 import { useCallback } from "react";
 
 const MonthlyLeaderboard = () => {
+  // const [leaderboard, setLeaderboard] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [avgScore, setAvgScore] = useState();
+  const [rank, setRank] = useState();
+  const [accuracy, setAccuracy] = useState();
+  const [ userScore, setUserScore] = useState();
+  // const [ averageScore, setAverageScore] = useState();
+  const[totalParticipant, setTotalParticipant] = useState();
+  const[score, setScore] = useState();
   const today = new Date();
   const formattedDate = `${today.toLocaleString("default", {
     month: "long",
   })}${today.getFullYear()}`;
   const testId = formattedDate;
+  const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
+  const userId = userData.userId;
+
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    return `${hrs}h ${mins}m ${secs}s`;
+  };
 
 const getLeaderboard = useCallback(async () => {
   try {
     const res = await fetch(
       "https://gateprocs.vercel.app/monthly-leaderboard",
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          testId,
-        }),
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            testId,
+            userId,
+          }),
+        }
+      );
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.message || "Failed");
       }
-    );
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message || "Failed");
+  
+      setLeaderboard(data.leaderboard);
+      setAvgScore(data.averageScore);
+      setRank(data.rank);
+      setAccuracy(data.accuracy);
+      setUserScore(data.userScore);
+      setScore(data.score);
+      setTotalParticipant(data.totalParticipants)
+    } catch (err) {
+      console.log(err);
     }
-
-    setLeaderboard(data);
-  } catch (err) {
-    console.log(err);
-  }
-}, [testId]);
+  }, [testId, userId]);
 
 useEffect(() => {
   getLeaderboard();
@@ -52,7 +77,7 @@ useEffect(() => {
           <div className="card shadow-sm text-center">
             <div className="card-body">
               <h5>🏆 Your Rank</h5>
-              <h2>#4</h2>
+              <h2>{rank}</h2>
             </div>
           </div>
         </div>
@@ -61,7 +86,7 @@ useEffect(() => {
           <div className="card shadow-sm text-center">
             <div className="card-body">
               <h5>🎯 Your Score</h5>
-              <h2>62</h2>
+              <h2>{userScore}</h2>
             </div>
           </div>
         </div>
@@ -70,7 +95,7 @@ useEffect(() => {
           <div className="card shadow-sm text-center">
             <div className="card-body">
               <h5>📊 Accuracy</h5>
-              <h2>84%</h2>
+              <h2>{accuracy}</h2>
             </div>
           </div>
         </div>
@@ -83,7 +108,7 @@ useEffect(() => {
 
         <div className="card-header bg-primary text-white">
           <h4 className="mb-0">
-            🏅 Monthly Leaderboard
+            🏅 Leaderboard
           </h4>
         </div>
 
@@ -94,7 +119,7 @@ useEffect(() => {
             <thead className="table-dark">
               <tr>
                 <th>Rank</th>
-                <th>Name</th>
+                <th>UserID</th>
                 <th>Score</th>
                 <th>Correct</th>
                 <th>Accuracy</th>
@@ -104,19 +129,19 @@ useEffect(() => {
 
             <tbody>
 
-              {leaderboard.map((user) => (
+              {leaderboard.map((user,index) => (
 
                 <tr
-                  key={user.user}
+                  key={index+1}
                   className={user.isCurrentUser ? "table-warning fw-bold" : ""}
                 >
 
                   <td style={{fontSize:"20px"}}>
 
-                    {user.rank === 1 && "🥇"}
-                    {user.rank === 2 && "🥈"}
-                    {user.rank === 3 && "🥉"}
-                    {user.rank > 3 && "#" + user.rank}
+                    {index+1 === 1 && "🥇"}
+                    {index+1 === 2 && "🥈"}
+                    {index+1 === 3 && "🥉"}
+                    {index+1 > 3 && "#" + (index+1)}
 
                   </td>
 
@@ -148,7 +173,7 @@ useEffect(() => {
 
                   </td>
 
-                  <td>{user.timeTaken}</td>
+                  <td>{formatTime(user.timeTaken)}</td>
 
                 </tr>
 
@@ -169,21 +194,21 @@ useEffect(() => {
         <div className="col-md-4">
           <div className="alert alert-primary mb-2">
             <strong>Total Participants</strong><br />
-            538
+            {totalParticipant}
           </div>
         </div>
 
         <div className="col-md-4">
           <div className="alert alert-success mb-2">
             <strong>Highest Score</strong><br />
-            71
+            {score}
           </div>
         </div>
 
         <div className="col-md-4">
           <div className="alert alert-warning mb-2">
             <strong>Average Score</strong><br />
-            42.8
+            {avgScore}
           </div>
         </div>
 
