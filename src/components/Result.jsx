@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 const Result = () => {
   const [answers, setAnswers] = useState([]);
-  // const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const navigate = useNavigate();
   const [detailed, setDetailed] = useState(false);
   const [notSubmitted, setNotSubmitted] = useState(false);
@@ -58,7 +58,7 @@ const Result = () => {
     const data = await res.json();
     if (data.answers) {
       setAnswers(data.answers);
-      // setQuestions(data.questions);
+      setQuestions(data.questions);
     }
   }, [userId, testId]);
 
@@ -124,14 +124,14 @@ const Result = () => {
         {answers.map((item, index) => (
           <div key={item.qId} className="card mb-3 shadow-sm">
             <div className="card-body">
-              <h5>Question {index + 1} </h5>
+              <h5>Question {index + 1} {questions[index].question}</h5>
 
               <p>
                 <strong>Type:</strong> {item.questionType}
               </p>
 
               <p>
-                <strong>Your Answer:</strong> {item.answer}
+                <strong>Your Answer:</strong> {item.answer} 
               </p>
             </div>
           </div>
