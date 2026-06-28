@@ -20,26 +20,31 @@ import OTPLogin from "./components/OTPLogin";
 import UpdateSolutionVideo from "./components/Admin/UpdateSolutionVideo";
 import Result from "./components/Result";
 // import { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import { useCallback } from "react";
+// import { useEffect } from "react";
 
 function App() {
-  // const [isAdmin, setIsAdmin] = useState(false);
-  // const ADMIN_EMAIL = "raj@gmail.com";
+  // const [attempted, setAttempted] = useState(false);
   const isLoggedIn = localStorage.getItem("isLoggedIn");
-  // if (isLoggedIn) {
-  //   const userData = JSON.parse(isLoggedIn);
-  //   if (userData.email === ADMIN_EMAIL) {
-  //     setIsAdmin(true);
-  //   }
-  // }
+  // const navigate = useNavigate();
 
   let admin = false;
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
   if (userData) {
-    // console.log(userData.name)
-    if (userData.email === "raj@gmail.com" ||userData.email ==="guptjyoti7800@gmail.com" || userData.email==="rajangel820764@gmail.com"|| userData.email==="shaktimaan6151@gmail.com"||userData.email==="mahtab802111@gmail.com") {
+    if (
+      userData.email === "raj@gmail.com" ||
+      userData.email === "guptjyoti7800@gmail.com" ||
+      userData.email === "rajangel820764@gmail.com" ||
+      userData.email === "shaktimaan6151@gmail.com" ||
+      userData.email === "mahtab802111@gmail.com"
+    ) {
       admin = true;
     }
   }
+
+  
+
   return (
     <BrowserRouter>
       <Navbar />
@@ -70,29 +75,34 @@ function App() {
         ) : (
           <Route path="/" element={<Info />} />
         )}
+        {admin && <Route path="/admin" element={<Admin />} />}
         {admin && (
-          <Route path="/admin" element={<Admin />} />
-        )}
-        {admin&&(
           <Route
-          path="/update-solution-video"
-          element={<UpdateSolutionVideo />}
-        />
+            path="/update-solution-video"
+            element={<UpdateSolutionVideo />}
+          />
         )}
+        {/* {!attempted && (
+          <Route path="/testinterface" element={<TestInterface />} />
+        )} */}
 
         <Route path="/info" element={<Info />} />
         <Route path="/" element={<Info />} />
-        {/* <Route path="/admin" element={<Admin />} /> */}
-        {isLoggedIn&&(<Route path="/testinterface" element={<TestInterface />} />)}
-        {admin&&(<Route path="/add-questions" element={<AddQuestion />} />)}
-        {isLoggedIn&&(<Route path="/user-profile" element={<UserProfile />} />)}
-        {isLoggedIn&&(<Route path="/test-history" element={<TestHistory />} />)}
-        {isLoggedIn&&(<Route path="/daily-leaderboard" element={<DailyLeaderboard />} />)}
-        {isLoggedIn&&(<Route path="/monthly-leaderboard" element={<MonthlyLeaderboard />} />)}
-        {isLoggedIn&&(<Route path="/result" element={<Result/>}/>)}
-        {isLoggedIn&&(<Route path="/leaderboard" element={<Leaderboard />} />)}
+        {isLoggedIn && (
+          <Route path="/testinterface" element={<TestInterface />} />
+        )}
+        {admin && <Route path="/add-questions" element={<AddQuestion />} />}
+        {isLoggedIn && <Route path="/user-profile" element={<UserProfile />} />}
+        {isLoggedIn && <Route path="/test-history" element={<TestHistory />} />}
+        {isLoggedIn && (
+          <Route path="/daily-leaderboard" element={<DailyLeaderboard />} />
+        )}
+        {isLoggedIn && (
+          <Route path="/monthly-leaderboard" element={<MonthlyLeaderboard />} />
+        )}
+        {isLoggedIn && <Route path="/result" element={<Result />} />}
+        {isLoggedIn && <Route path="/leaderboard" element={<Leaderboard />} />}
         <Route path="/otp-login" element={<OTPLogin />} />
-        
       </Routes>
     </BrowserRouter>
   );

@@ -40,11 +40,7 @@ const Result = () => {
     return `${hrs}h ${mins}m ${secs}s`;
   };
 
-  // const sortQandA = useCallback((questions,answers) => {
-  //   questions.sort((a, b) => a.qId.localeCompare(b.qId));
-
-  //   answers.sort((a, b) => a.qId.localeCompare(b.qId));
-  // });
+  
 
   const showSolution = useCallback(async () => {
     setDetailed(true);
@@ -65,13 +61,7 @@ const Result = () => {
     if (data.answers) {
       setQuestions(data.questions.sort((a, b) => a.qId.localeCompare(b.qId)));
       setAnswers(data.answers.sort((a, b) => a.qId.localeCompare(b.qId)));
-      // data.questions.sort((a, b) => a.qId.localeCompare(b.qId));
-      // data.answers.sort((a, b) => a.qId.localeCompare(b.qId));
-      // setAnswers(data.answers);
-      // setQuestions(data.questions);
-      // sortQandA(questions,answers);
-      // await questions.sort((a, b) => a.qId.localeCompare(b.qId));
-      // await answers.sort((a, b) => a.qId.localeCompare(b.qId));
+      
     }
   }, [userId, testId]);
 
@@ -133,96 +123,7 @@ const Result = () => {
   if (detailed) {
     return (
       <>
-        {/* <h5>Detailed Analysis</h5>
-        {answers.map((item, index) => (
-          <div key={item.qId} className="card mb-3 shadow-sm">
-            <div className="card-body">
-              <h5>
-                Question {index + 1} : {questions[index].question}
-                
-              </h5>
-              {questions[index].qImage && (
-                          <img
-                            src={questions[index].qImage}
-                            alt="Question"
-                            className="img-fluid rounded my-3"
-                          />
-                        )}
-              <div>
-                {(questions[index].questionType === "MCQ" ||
-                  questions[index].questionType === "MSQ") && (
-                  <div className="mb-3">
-                    <strong>Options</strong>
-
-                    {questions[index].options.map((option, i) => (
-                      <p>
-                        <strong>{String.fromCharCode(65 + i)}. </strong>
-                        {option.text}
-                        <h5>
-                          {option.image && (
-                          <img
-                            src={option.image}
-                            alt="Question"
-                            className="img-fluid rounded my-3"
-                          />
-                        )}
-                        </h5>
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <p>
-                <strong>Type:</strong> {item.questionType}
-              </p>
-
-              <p>
-                <strong>Your Answer:</strong> {item.answer}
-              </p>
-              <p>
-                <strong>Correct Answer: </strong>{" "}
-                {questions[index].questionType === "MCQ" ? (
-                  <>{questions[index].correctAnswer}</>
-                ) : (
-                  <>
-                    {questions[index].questionType === "MSQ" ? (
-                      <>{questions[index].correctAnswers}</>
-                    ) : (
-                      <>
-                        {questions[index].questionType === "NAT" &&
-                          questions[index].answer}
-                      </>
-                    )}
-                  </>
-                )}
-              </p>
-              <p>
-                <strong>Marks:</strong> {questions[index].marks}
-              </p>
-              <p>
-                <strong>Negative Marks:</strong>{" "}
-                {questions[index].negativeMarks}
-              </p>
-              <p>
-                <strong>Solution:</strong>{" "}
-                {questions[index].solution}
-              </p>
-              {questions[index].solutionImage}
-
-            </div>
-          </div>
-        ))}
-        <div className="col-4 col-md-3">
-          <button
-            className="btn btn-danger w-100 text-center"
-            onClick={closeSolution}
-          >
-            <i className="fas fa-book-open me-2"></i>
-            <span className="d-none d-md-inline">Close</span>
-            <span className="d-inline d-md-none">Close</span>
-          </button>
-        </div> */}
+        
         <h4 className="text-center mb-4 fw-bold text-primary">
           <i className="fas fa-file-alt me-2"></i>
           Detailed Analysis

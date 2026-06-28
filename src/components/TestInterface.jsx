@@ -232,7 +232,9 @@ export default function TestInterface() {
 
       if (data.success) {
         alert("Test Submitted Successfully");
-        navigate("/tests");
+        navigate("/tests", {
+          replace: true,
+        });
         window.location.reload();
       }
     } catch (error) {
@@ -240,6 +242,19 @@ export default function TestInterface() {
       submitted.current = false;
     }
   };
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = ""; // Browser confirmation dialog
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -344,7 +359,6 @@ export default function TestInterface() {
                     const optionLetter = String.fromCharCode(65 + index);
 
                     return (
-                      
                       <label
                         key={index}
                         htmlFor={`option-${currentQuestion}-${index}`}
