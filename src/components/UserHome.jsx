@@ -13,7 +13,9 @@ const UserHome = () => {
 
   const getTopThree = async () => {
     try {
-      const response = await fetch("https://gateprocs.vercel.app/get-top-three");
+      const response = await fetch(
+        "https://gateprocs.vercel.app/get-top-three",
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -25,9 +27,6 @@ const UserHome = () => {
       console.error(err);
     }
   };
-
-  
-
 
   useEffect(() => {
     fetch("https://gateprocs.vercel.app/youtube-video")
@@ -45,93 +44,82 @@ const UserHome = () => {
       </div>
 
       <div className="containerer my-5">
-  <h2 className="text-center fw-bold mb-5">🏆 Hall of Fame</h2>
+        <h2 className="text-center fw-bold mb-5">🏆 Hall of Fame</h2>
 
-  <div className="row g-4">
-    {topThree.map((user, index) => {
-      const medals = ["🥇", "🥈", "🥉"];
-      const border = ["warning", "secondary", "danger"];
-      const bg = ["#fff8e1", "#b0becc", "#c7b8b8"];
+        <div className="row g-4">
+          {topThree.map((user, index) => {
+            const medals = ["🥇", "🥈", "🥉"];
+            const border = ["warning", "secondary", "danger"];
+            const bg = ["#fff8e1", "#b0becc", "#c7b8b8"];
+            const img=["https://img.magnific.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?semt=ais_hybrid&w=740&q=80",
+              "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_VizQElqD0pp0CYyAMddLO9XRjJFhrHTKvRH8W0LgCw&s=10"
+            ]
 
-      return (
-        <div
-          className="col-12 col-lg-4"
-          key={user.userId}
-        >
-          <div
-            className={`card border-${border[index]} shadow-lg h-100 leaderboard-card`}
-            style={{
-              borderWidth: "2px",
-              background: bg[index],
-              transition: "0.3s",
-              borderRadius: "20px",
-            }}
-          >
-            <div className="card-body text-center">
-
-              <div
-                style={{
-                  fontSize: "45px",
-                }}
-              >
-                {medals[index]}
-              </div>
-
-              <img
-                src={user.profilePic}
-                alt=""
-                className="rounded-circle border border-3"
-                style={{
-                  width: "90px",
-                  height: "90px",
-                  objectFit: "cover",
-                }}
-              />
-
-              <h4 className="mt-3 fw-bold">
-                {user.name}
-              </h4>
-
-              <p className="text-muted mb-1">
-                Rank #{index + 1}
-              </p>
-
-              <h2 className="text-success fw-bold">
-                {user.score}
-              </h2>
-
-              <p className="mb-1">
-                Accuracy
-              </p>
-
-              <div className="progress mb-3" style={{ height: "10px" }}>
+            return (
+              <div className="col-12 col-lg-4" key={user.userId}>
                 <div
-                  className="progress-bar bg-success"
+                  className={`card border-${border[index]} shadow-lg h-100 leaderboard-card`}
                   style={{
-                    width: `${user.accuracy}%`,
+                    borderWidth: "2px",
+                    background: bg[index],
+                    transition: "0.3s",
+                    borderRadius: "20px",
                   }}
-                ></div>
+                >
+                  <div className="card-body text-center">
+                    <div
+                      style={{
+                        fontSize: "45px",
+                      }}
+                    >
+                      {medals[index]}
+                    </div>
+
+                    <img
+                      src={img[index]}
+                      alt=""
+                      className="rounded-circle border border-3"
+                      style={{
+                        width: "90px",
+                        height: "90px",
+                        objectFit: "cover",
+                      }}
+                    />
+
+                    <h4 className="mt-3 fw-bold">{user.name}</h4>
+
+                    <p className="text-muted mb-1">Rank #{index + 1}</p>
+
+                    <h2 className="text-success fw-bold">{user.score}</h2>
+
+                    <p className="mb-1">Accuracy</p>
+
+                    <div className="progress mb-3" style={{ height: "10px" }}>
+                      <div
+                        className="progress-bar bg-success"
+                        style={{
+                          width: `${user.accuracy}%`,
+                        }}
+                      ></div>
+                    </div>
+
+                    <span className="badge bg-dark fs-6">{user.accuracy}%</span>
+                  </div>
+                </div>
               </div>
-
-              <span className="badge bg-dark fs-6">
-                {user.accuracy}%
-              </span>
-
-            </div>
-          </div>
+            );
+          })}
         </div>
-      );
-    })}
-  </div>
 
-  <div className="text-center mt-5">
-    <Link to='/leaderboard'>
-      <button className="btn btn-primary px-4 rounded-pill">
-      View Full Leaderboard →
-    </button>
-    </Link>
-  </div>
-</div>
+        <div className="text-center mt-5">
+          <Link to="/leaderboard">
+            <button className="btn btn-primary px-4 rounded-pill">
+              View Full Leaderboard →
+            </button>
+          </Link>
+        </div>
+      </div>
 
       <div className="container-lg mt-4">
         <h3 className="mb-3">Watch This Before Starting the Test</h3>
