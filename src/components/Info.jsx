@@ -61,7 +61,7 @@ const Info = () => {
             improve weak subjects, and experience a real exam environment.
           </li>
           <li>We have a team for managing this project.</li>
-          <li>
+          {/* <li>
             Your small contribution makes this test series free.{" "}
             <a
               href="https://upilinks.in/payment-link/upi1247705275"
@@ -70,7 +70,7 @@ const Info = () => {
             >
               Click to contribute
             </a>{" "}
-          </li>
+          </li> */}
         </ul>
       </div>
       <hr />

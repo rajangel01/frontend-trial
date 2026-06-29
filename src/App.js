@@ -19,15 +19,9 @@ import Leaderboard from "./components/Leaderboard";
 import OTPLogin from "./components/OTPLogin";
 import UpdateSolutionVideo from "./components/Admin/UpdateSolutionVideo";
 import Result from "./components/Result";
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { useCallback } from "react";
-// import { useEffect } from "react";
 
 function App() {
-  // const [attempted, setAttempted] = useState(false);
   const isLoggedIn = localStorage.getItem("isLoggedIn");
-  // const navigate = useNavigate();
 
   let admin = false;
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
@@ -51,7 +45,7 @@ function App() {
       {/* <Space/> */}
       <Routes>
         {isLoggedIn ? (
-          <Route path="/home" element={<UserHome />} />
+          <Route path="/" element={<UserHome />} />
         ) : (
           <Route path="/" element={<Info />} />
         )}
@@ -82,9 +76,6 @@ function App() {
             element={<UpdateSolutionVideo />}
           />
         )}
-        {/* {!attempted && (
-          <Route path="/testinterface" element={<TestInterface />} />
-        )} */}
 
         <Route path="/info" element={<Info />} />
         <Route path="/" element={<Info />} />
