@@ -243,6 +243,25 @@ export default function TestInterface() {
     }
   };
 
+  //prevent reload
+  useEffect(() => {
+  const handleKeyDown = (e) => {
+    if (e.key === "F5") {
+      e.preventDefault();
+    }
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "r") {
+      e.preventDefault();
+    }
+  };
+
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+}, []);
+
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       e.preventDefault();
