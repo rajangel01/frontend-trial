@@ -1,105 +1,93 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 export default function Navbar() {
-  // const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("isLoggedIn");
-
+  const [open, setOpen] = useState(false);
 
   let admin = false;
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
-  if (userData) {
-    // console.log(userData.name)
-    if (userData.email === "raj@gmail.com" ||userData.email ==="guptjyoti7800@gmail.com" || userData.email==="rajangel820764@gmail.com"|| userData.email==="shaktimaan6151@gmail.com"||userData.email==="mahtab802111@gmail.com") {
-      admin = true;
-    }
+
+  if (
+    userData &&
+    [
+      "raj@gmail.com",
+      "guptjyoti7800@gmail.com",
+      "rajangel820764@gmail.com",
+      "shaktimaan6151@gmail.com",
+      "mahtab802111@gmail.com",
+    ].includes(userData.email)
+  ) {
+    admin = true;
   }
 
   return (
-    <nav style={styles.nav}>
-      {/* Logo */}
-      <h5 style={styles.logo}>GATEProCS</h5>
-
-      {/* Links */}
-      <div style={styles.links}>
-        {isLoggedIn ? (
-          <Link to="/home" style={styles.link}>
-            {/* <i className="fa-solid fa-house"></i> */}
-            Home
-          </Link>
-        ) : (
-          <Link to="/info" style={styles.link}>
-            {/* <i className="fa-solid fa-house"></i> */}
-            Info
-          </Link>
-        )}
-
-        <Link to="/info" style={styles.link}>
-          {/* <i className="fa-solid fa-circle-info"></i> */}
-          Info
+    <nav className="navbar navbar-expand-lg bg-white shadow-sm sticky-top">
+      <div className="container-fluid px-4">
+        <Link className="navbar-brand fw-bold fs-3" to="/">
+          <span className="text-primary">GATE</span>ProCS
         </Link>
 
-        {admin &&(
-          <Link to="/admin" style={styles.link}>
-            Admin
-          </Link>
-        )}
-        {isLoggedIn && (
-          <Link to="/dashboard" style={styles.link}>
-             <i className="fa-solid fa-bars"></i>
-          </Link>
-        )}
+        {/* <button className="navbar-toggler ms-auto" type="button">
+          <span className="navbar-toggler-icon"></span>
+        </button> */}
+        <button
+  className="navbar-toggler ms-auto"
+  type="button"
+  onClick={() => setOpen(!open)}
+>
+  <span className="navbar-toggler-icon"></span>
+</button>
 
-        
+        {/* Links */}
+        <div
+          className={`collapse navbar-collapse justify-content-center ${
+            open ? "show" : ""
+          }`}
+        >
+          <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-4 fw-semibold">
+            <li className="nav-item">
+              <Link className="nav-link" to={isLoggedIn ? "/home" : "/info"} onClick={() => setOpen(false)}>
+                Home
+              </Link>
+            </li>
 
-        {!isLoggedIn && (
-          <Link to="/login" style={styles.loginBtn}>
-            Login
-          </Link>
-        )}
+            <li className="nav-item">
+              <Link className="nav-link" to="/info" onClick={() => setOpen(false)}>
+                Info
+              </Link>
+            </li>
+
+            {admin && (
+              <li className="nav-item">
+                <Link className="nav-link text-danger fw-bold" to="/admin" onClick={() => setOpen(false)}>
+                  Admin
+                </Link>
+              </li>
+            )}
+
+            {isLoggedIn && (
+              <li className="nav-item">
+                <Link className="nav-link" to="/dashboard" onClick={() => setOpen(false)}>
+                  Dashboard
+                </Link>
+              </li>
+            )}
+
+            {!isLoggedIn && (
+              <li className="nav-item">
+                <Link
+                  className="btn btn-primary rounded-pill px-4 fw-semibold"
+                  to="/login"
+                  onClick={() => setOpen(false)}
+                >
+                  Login
+                </Link>
+              </li>
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );
 }
-
-const styles = {
-  nav: {
-    // position: "fixed",
-    // width:"100%",
-    margin: "0",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "1px 10px",
-    background: "#0f172a",
-    color: "white",
-  },
-  logo: {
-    margin: 0,
-    fontWeight: "bold",
-  },
-  links: {
-    display: "flex",
-    margin:"15px",
-    gap: "30px",
-    alignItems: "center",
-  },
-  link: {
-    color: "white",
-    textDecoration: "none",
-    fontSize: "16px",
-  },
-  loginBtn: {
-    padding: "4px 8px",
-    background: "#22c55e",
-    border: "none",
-    color: "white",
-    cursor: "pointer",
-  },
-  logoutBtn: {
-    padding: "4px 8px",
-    background: "#ef4444",
-    border: "none",
-    color: "white",
-    cursor: "pointer",
-  },
-};
