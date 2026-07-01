@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./components/Auth.css";
 import Signup from "./components/Signup";
 import Login from "./components/Login";
-// import Home from './components/Home';
+import Home from './components/Home';
 import Navbar from "./components/Navbar";
 import Info from "./components/Info";
 import Admin from "./components/Admin";
@@ -77,6 +77,7 @@ function App() {
           />
         )}
 
+        <Route path="/before-login" element={<Home/>}/>
         <Route path="/info" element={<Info />} />
         <Route path="/" element={<Info />} />
         {isLoggedIn && (

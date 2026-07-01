@@ -23,7 +23,7 @@ const Info = () => {
   return (
     <div className="containerer py-5">
       <div className="bg-primary text-white rounded-4 p-5 text-center shadow-lg mb-5">
-        <h1 className="fw-bold">GateProCS</h1>
+        <h1 className="fw-bold">GATEProCS</h1>
         <p className="lead">
           India's Modern GATE Computer Science Test Series Platform
         </p>
@@ -47,12 +47,12 @@ const Info = () => {
 
       <div className="card shadow border-0 rounded-4 mb-5">
         <div className="card-body p-5">
-          <h2 className="fw-bold text-primary mb-4">About GateProCS</h2>
+          <h2 className="fw-bold text-primary mb-4">About GATEProCS</h2>
 
           <p className="text-secondary">
-            GateProCS is an online platform dedicated to helping GATE Computer
+            GATEProCS is an online platform dedicated to helping GATE Computer
             Science aspirants prepare through high-quality mock tests,
-            performance analytics, and a real exam-like experience. GateProCS is
+            performance analytics, and a real exam-like experience. GATEProCS is
             more than just a test series platform—it's a continuously evolving
             learning ecosystem built to help GATE Computer Science aspirants
             prepare with confidence.
@@ -80,14 +80,14 @@ const Info = () => {
             <div>
               <h2 className="fw-bold mb-0 text-dark">About the Developer</h2>
               <small className="text-muted">
-                Meet the creator of GateProCS
+                Meet the creator of GATEProCS
               </small>
             </div>
           </div>
 
           <p>
             Hi, I'm <strong>Raj Kumar</strong>, Founder & Full Stack Developer
-            of GateProCS.
+            of GATEProCS.
           </p>
 
           <p>
@@ -144,7 +144,7 @@ const Info = () => {
                   <p className="text-muted mb-0">
                     Responsible for the complete design, development,
                     deployment, maintenance, and continuous improvement of the{" "}
-                    <b>GateProCS </b>
+                    <b>GATEProCS </b>
                     platform. This includes the frontend, backend,
                     authentication, database, APIs, performance analytics, and
                     overall system architecture.
@@ -332,7 +332,7 @@ const Info = () => {
     <div className="text-center mb-5">
       <h2 className="fw-bold text-primary">
         <i className="fa-solid fa-star me-2"></i>
-        Why Choose GateProCS?
+        Why Choose GATEProCS?
       </h2>
       <p className="text-muted mb-0">
         Everything you need to prepare for GATE CSE in one place.
@@ -398,11 +398,11 @@ const Info = () => {
 
       <footer className="bg-dark text-white rounded-4 p-4 mt-5">
         <div className="text-center">
-          <h5 className="fw-bold">GateProCS</h5>
+          <h5 className="fw-bold">GATEProCS</h5>
 
           <p className="mb-1">Helping GATE CSE Aspirants Prepare Smarter.</p>
 
-          <small>© 2026 GateProCS. All Rights Reserved.</small>
+          <small>© 2026 GATEProCS. All Rights Reserved.</small>
         </div>
       </footer>
     </div>

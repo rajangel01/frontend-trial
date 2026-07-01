@@ -47,7 +47,7 @@ export default function Navbar() {
         >
           <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-4 fw-semibold">
             <li className="nav-item">
-              <Link className="nav-link" to={isLoggedIn ? "/home" : "/info"} onClick={() => setOpen(false)}>
+              <Link className="nav-link" to={isLoggedIn ? "/home" : "/before-login"} onClick={() => setOpen(false)}>
                 Home
               </Link>
             </li>
@@ -74,7 +74,7 @@ export default function Navbar() {
               </li>
             )}
 
-            {!isLoggedIn && (
+            {/* {!isLoggedIn && (
               <li className="nav-item">
                 <Link
                   className="btn btn-primary rounded-pill px-4 fw-semibold"
@@ -84,7 +84,7 @@ export default function Navbar() {
                   Login
                 </Link>
               </li>
-            )}
+            )} */}
           </ul>
         </div>
       </div>
