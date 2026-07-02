@@ -47,7 +47,7 @@ function App() {
         {isLoggedIn ? (
           <Route path="/" element={<UserHome />} />
         ) : (
-          <Route path="/" element={<Info />} />
+          <Route path="/" element={<Home/>} />
         )}
         {isLoggedIn ? (
           <Route path="/home" element={<UserHome />} />
@@ -67,7 +67,7 @@ function App() {
         {isLoggedIn ? (
           <Route path="/tests" element={<Tests />} />
         ) : (
-          <Route path="/" element={<Info />} />
+          <Route path="/" element={<Home/>} />
         )}
         {admin && <Route path="/admin" element={<Admin />} />}
         {admin && (
@@ -79,7 +79,7 @@ function App() {
 
         <Route path="/before-login" element={<Home/>}/>
         <Route path="/info" element={<Info />} />
-        <Route path="/" element={<Info />} />
+        <Route path="/" element={<Home/>} />
         {isLoggedIn && (
           <Route path="/testinterface" element={<TestInterface />} />
         )}
