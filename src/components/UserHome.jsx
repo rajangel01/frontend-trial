@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import emailjs from "@emailjs/browser";
+import { useNavigate } from "react-router-dom";
 
 import "swiper/css";
 
 const UserHome = () => {
   const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
-  const [videoUrl, setVideoUrl] = useState("");
+  // const [videoUrl, setVideoUrl] = useState("");
   const [topThree, setTopThree] = useState([]);
 
   useEffect(() => {
@@ -33,14 +34,14 @@ const UserHome = () => {
     }
   };
 
-  useEffect(() => {
-    fetch("https://gateprocs.vercel.app/youtube-video")
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data)
-        setVideoUrl(data.videoUrl);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch("https://gateprocs.vercel.app/youtube-video")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       // console.log(data)
+  //       setVideoUrl(data.videoUrl);
+  //     });
+  // }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,6 +62,44 @@ const UserHome = () => {
       });
   };
 
+  const navigate = useNavigate();
+  const [dashboard, setDashboard] = useState({
+    totalTests: 0,
+    rank: 0,
+    avgScore: 0,
+    bestScore: 0,
+  });
+  // const userData = JSON.parse(localStorage.getItem("isLoggedIn"));
+  const userId = userData.userId;
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    navigate("/");
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    const getDashboard = async () => {
+      const res = await fetch(
+        "https://gateprocs.vercel.app/update-user-dashboard",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: userId,
+          }),
+        },
+      );
+
+      const data = await res.json();
+      setDashboard(data);
+    };
+
+    getDashboard();
+  }, [userId]);
+
   return (
     <div className="bg-light min-vh-100 py-4">
       {/* Welcome */}
@@ -77,6 +116,62 @@ const UserHome = () => {
         </div>
       </div>
 
+      <div className="container-fluid mt-5">
+        <div className="card shadow-lg border-0">
+          <div className="card-body">
+            <div className="row align-items-center">
+              {/* User Details */}
+              <div className="col-md-9 ">
+                <h4>Your Test Details:</h4>
+
+                <div className="row mt-4 ">
+                  <div className="col-6 col-md-3 mb-3">
+                    <div className="card text-center bg-primary text-white">
+                      <div className="card-body">
+                        <h4>{dashboard.rank}</h4>
+                        <small>Rank</small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-6 col-md-3 mb-3">
+                    <div className="card text-center bg-success text-white">
+                      <div className="card-body">
+                        <h4>{dashboard.totalTests}</h4>
+                        <small>Tests</small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-6 col-md-3 mb-3">
+                    <div className="card text-center bg-warning text-dark">
+                      <div className="card-body">
+                        <h4>{dashboard.avgScore}</h4>
+                        <small>Avg Score</small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="col-6 col-md-3 mb-3">
+                    <div className="card text-center bg-danger text-white">
+                      <div className="card-body">
+                        <h4>{dashboard.bestScore}</h4>
+                        <small>Best Score</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <button className="btn btn-danger" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
       {/* Hall of Fame */}
       <div className="container-fluid">
         <div className="card border-0 shadow-lg">
@@ -166,35 +261,7 @@ const UserHome = () => {
       </div>
 
       {/* YouTube */}
-      <div className="container-fluid mt-5">
-        <div className="card border-0 shadow">
-          <div className="card-body">
-            <h3 className="fw-bold mb-3">
-              🎥 Watch This Before Starting the Test
-            </h3>
 
-            <div className="ratio ratio-16x9 rounded overflow-hidden">
-              <iframe
-                src={videoUrl}
-                title="YouTube video"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            </div>
-
-            <div className="text-center mt-4">
-              <a
-                href="https://www.youtube.com/@raj._angel"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-danger btn-lg rounded-pill"
-              >
-                📺 Subscribe on YouTube
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="container-fluid py-5">
         <div className="row justify-content-center">
           <div className="col-lg-7 col-md-9">
