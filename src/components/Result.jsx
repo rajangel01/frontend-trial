@@ -44,6 +44,8 @@ const Result = () => {
     setDetailed(false);
   };
 
+
+
   const showSolution = useCallback(async () => {
     setDetailed(true);
     const res = await fetch(
