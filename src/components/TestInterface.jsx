@@ -235,7 +235,7 @@ export default function TestInterface() {
         navigate("/tests", {
           replace: true,
         });
-        window.location.reload();
+        // window.location.reload();
       }
     } catch (error) {
       console.log(error);

@@ -48,7 +48,7 @@ export default function AuthPage() {
                       lineHeight: "32px"
                     }}
                   >
-                    India's Modern GATE Preparation Platform.
+                    India's Modern GATE CSE Preparation Platform.
 
                     Practice thousands of previous year questions,
                     monitor your progress, compete on leaderboard,
