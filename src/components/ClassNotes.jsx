@@ -176,7 +176,7 @@ const ClassNotes = () => {
 
                 <div className="col-md-3 text-md-end mt-3 mt-md-0">
                   <a
-                    
+                    href=""
                     rel="noopener noreferrer"
                     className="btn btn-outline-primary rounded-pill px-4"
                   >
@@ -208,7 +208,7 @@ const ClassNotes = () => {
 
                 <div className="col-md-3 text-md-end mt-3 mt-md-0">
                   <a
-                    
+                    href=""
                     rel="noopener noreferrer"
                     className="btn btn-outline-primary rounded-pill px-4"
                   >
