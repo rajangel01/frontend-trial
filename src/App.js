@@ -19,6 +19,7 @@ import Leaderboard from "./components/Leaderboard";
 import OTPLogin from "./components/OTPLogin";
 import UpdateSolutionVideo from "./components/Admin/UpdateSolutionVideo";
 import Result from "./components/Result";
+import ClassNotes from "./components/ClassNotes";
 
 function App() {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
@@ -92,6 +93,7 @@ function App() {
         {isLoggedIn && (
           <Route path="/monthly-leaderboard" element={<MonthlyLeaderboard />} />
         )}
+        {isLoggedIn && <Route path="/class-notes" element={<ClassNotes />} />}
         {isLoggedIn && <Route path="/result" element={<Result />} />}
         {isLoggedIn && <Route path="/leaderboard" element={<Leaderboard />} />}
         <Route path="/otp-login" element={<OTPLogin />} />

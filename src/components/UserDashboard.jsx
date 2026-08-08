@@ -46,6 +46,13 @@ const UserDashboard = () => {
       color: "secondary",
       path: "/test-history",
     },
+    {
+      title: "Class Notes",
+      subtitle: "Download class notes",
+      icon: "fa-solid fa-book-open",
+      color: "secondary",
+      path: "/class-notes",
+    },
   ];
 
   return (
