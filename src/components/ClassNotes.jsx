@@ -176,7 +176,6 @@ const ClassNotes = () => {
 
                 <div className="col-md-3 text-md-end mt-3 mt-md-0">
                   <a
-                    href="/"
                     href="https://drive.google.com/file/d/16MSSs-Qwlo4u9N6-LoBFlBDMi76jNKiM/view?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -210,7 +209,6 @@ const ClassNotes = () => {
 
                 <div className="col-md-3 text-md-end mt-3 mt-md-0">
                   <a
-                    href="/"
                     href="https://drive.google.com/file/d/1VuNk1g8qPBf3y6gywZ315hGCx6_acIl6/view?usp=sharing"
                     target="_blank"
                     rel="noopener noreferrer"
