@@ -168,15 +168,17 @@ const ClassNotes = () => {
                 </div>
 
                 <div className="col-md-6 mt-3 mt-md-0">
-                  <h5 className="fw-semibold mb-1">Introduction to Python</h5>
+                  <h5 className="fw-semibold mb-1">Keywords</h5>
                   <small className="text-muted">
-                    Python basics and introduction
+                    All 35 Keywords in Python
                   </small>
                 </div>
 
                 <div className="col-md-3 text-md-end mt-3 mt-md-0">
                   <a
                     href="/"
+                    href="https://drive.google.com/file/d/16MSSs-Qwlo4u9N6-LoBFlBDMi76jNKiM/view?usp=sharing"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-outline-primary rounded-pill px-4"
                   >
@@ -200,15 +202,17 @@ const ClassNotes = () => {
                 </div>
 
                 <div className="col-md-6 mt-3 mt-md-0">
-                  <h5 className="fw-semibold mb-1">Datatypes in Python</h5>
+                  <h5 className="fw-semibold mb-1">range() Function</h5>
                   <small className="text-muted">
-                    Python datatypes and their usage
+                    range() - a built in function in python
                   </small>
                 </div>
 
                 <div className="col-md-3 text-md-end mt-3 mt-md-0">
                   <a
                     href="/"
+                    href="https://drive.google.com/file/d/1VuNk1g8qPBf3y6gywZ315hGCx6_acIl6/view?usp=sharing"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-outline-primary rounded-pill px-4"
                   >
@@ -217,6 +221,74 @@ const ClassNotes = () => {
                 </div>
               </div>
             </div>
+
+            {/* day 3 */}
+            <div className="p-4 border-bottom">
+              <div className="row align-items-center">
+                <div className="col-md-1">
+                  <span className="text-muted fw-semibold">#03</span>
+                </div>
+
+                <div className="col-md-2">
+                  <span className="badge rounded-pill bg-info text-dark px-3 py-2">
+                    Python
+                  </span>
+                </div>
+
+                <div className="col-md-6 mt-3 mt-md-0">
+                  <h5 className="fw-semibold mb-1">Operators</h5>
+                  <small className="text-muted">
+                    Operators and its types in Python
+                  </small>
+                </div>
+
+                <div className="col-md-3 text-md-end mt-3 mt-md-0">
+                  <a
+                    href="https://drive.google.com/file/d/1CtNHfauuDf7875lNTk1ntsJ873pdKUa7/view?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline-primary rounded-pill px-4"
+                  >
+                    View PDF
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Day 4 */}
+
+            <div className="p-4">
+              <div className="row align-items-center">
+                <div className="col-md-1">
+                  <span className="text-muted fw-semibold">#04</span>
+                </div>
+
+                <div className="col-md-2">
+                  <span className="badge rounded-pill bg-info text-dark px-3 py-2">
+                    Python
+                  </span>
+                </div>
+
+                <div className="col-md-6 mt-3 mt-md-0">
+                  <h5 className="fw-semibold mb-1">if elif and else</h5>
+                  <small className="text-muted">
+                    Use of if-elif-else
+                  </small>
+                </div>
+
+                <div className="col-md-3 text-md-end mt-3 mt-md-0">
+                  <a
+                    href="https://drive.google.com/file/d/1rEx0SThbtaiVK3rYobHl4T581gH24Vvj/view?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline-primary rounded-pill px-4"
+                  >
+                    View PDF
+                  </a>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
